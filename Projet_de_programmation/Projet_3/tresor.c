@@ -13,7 +13,7 @@ struct donnees_jeu_t {
 
    gboolean etat_partie;
    GtkWidget *bouton[3];
-   GtkWidget *recommancer;
+   GtkWidget *recommencer;
    gboolean coffre_ouvert[3];
    GtkWidget *label_score;
    GtkWidget *label_etat_partie;
@@ -102,7 +102,7 @@ GtkWidget* get_bouton(const donnees_jeu *donnees, int index) {
 
 GtkWidget* get_recommencer(const donnees_jeu *donnees) {
    if (donnees == NULL) return NULL;
-   return donnees->recommancer;
+   return donnees->recommencer;
 }
 
 gboolean get_coffre_ouvert(const donnees_jeu *donnees, int index) {
@@ -150,7 +150,7 @@ void set_bouton(donnees_jeu *donnees, int index, GtkWidget *bouton) {
 
 void set_recommencer(donnees_jeu *donnees, GtkWidget *recommencer) {
    if (donnees == NULL) return;
-   donnees->recommancer = recommencer;
+   donnees->recommencer = recommencer;
 }
 
 void set_coffre_ouvert(donnees_jeu *donnees, int index, gboolean etat) {
@@ -213,7 +213,7 @@ void charger_nouvelle_image(GtkWidget *bouton, const char *chemin_image) {
    }
 
    // Redimensionner l'image à 100x100 pixels
-   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 85, 90, GDK_INTERP_BILINEAR);
+   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 135, 140, GDK_INTERP_BILINEAR);
    g_object_unref(pb_temp);
    if (pb == NULL) {
       fprintf(stderr, "Erreur lors de la redimension de l'image!\n");
@@ -262,6 +262,7 @@ void gerer_clic_coffre(GtkWidget *widget, gpointer data) {
       donnees->coffre_ouvert[coffre_a_reveler] = TRUE;
 
       charger_nouvelle_image(donnees->bouton[coffre_a_reveler], "./coffre_vide.jpg");
+      gtk_widget_set_sensitive(donnees->bouton[coffre_a_reveler], FALSE);
 
 
    } else if(donnees->nb_clique == 2) {
@@ -298,7 +299,7 @@ GtkWidget *charge_image_bouton(const char *chemin_image) {
       return NULL;
    }
 
-   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 85, 90, GDK_INTERP_NEAREST);
+   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 135, 140, GDK_INTERP_NEAREST);
    g_object_unref(pb_temp);
    if(pb == NULL) {
       fprintf(stderr, "Erreur lors de la redimension de l'image!\n");
@@ -321,7 +322,7 @@ GtkWidget *charge_image_bouton(const char *chemin_image) {
    
    gtk_button_set_image(GTK_BUTTON(pBouton), image);
 
-   gtk_widget_set_size_request(pBouton, 100, 100);
+   gtk_widget_set_size_request(pBouton, 150, 150);
 
    return pBouton;
 }
