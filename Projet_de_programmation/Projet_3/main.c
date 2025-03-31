@@ -26,14 +26,14 @@ int main(int argc, char **argv) {
     char v_d[30], etat_partie[30];
     GtkWidget *pLabel_v_d, *pLabel_etat_partie;
     
-    g_snprintf(v_d, sizeof(v_d), "Victoires: %d    Défaites: %d", 
+    sprintf(v_d, "Victoires: %d    Défaites: %d", 
               get_victoires(donnees), get_defaites(donnees));
 
     pLabel_v_d = gtk_label_new(v_d);
     gtk_widget_set_size_request(pLabel_v_d, 420, 35);
     set_label_score(donnees, pLabel_v_d);
 
-    g_snprintf(etat_partie, sizeof(etat_partie), "Choisissez un coffre !");
+    sprintf(etat_partie, "Choisissez un coffre !");
     pLabel_etat_partie = gtk_label_new(etat_partie);
     gtk_widget_set_size_request(pLabel_etat_partie, 420, 35);
     set_label_etat_partie(donnees, pLabel_etat_partie);

@@ -83,7 +83,7 @@ GtkWidget* get_recommencer(const donnees_jeu *donnees) {
 
 gboolean get_coffre_ouvert(const donnees_jeu *donnees, int index) {
    if (donnees == NULL || index < 0 || index >= 3) {
-       return FALSE; // Retourne FALSE si les paramètres sont invalides
+      return FALSE; // Retourne FALSE si les paramètres sont invalides
    }
    return donnees->coffre_ouvert[index];
 }
@@ -180,6 +180,35 @@ GtkWidget *creer_fenetre(void){
    return pF;
    }
 
+void charger_nouvelle_image(GtkWidget *bouton, const char *chemin_image) {
+   // Charger l'image depuis le fichier
+   GdkPixbuf *pb_temp = gdk_pixbuf_new_from_file(chemin_image, NULL);
+   if (pb_temp == NULL) {
+      printf("Erreur de chargement de l'image %s!\n", chemin_image);
+      return;
+   }
+
+   // Redimensionner l'image à 100x100 pixels
+   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 85, 90, GDK_INTERP_BILINEAR);
+   g_object_unref(pb_temp);
+   if (pb == NULL) {
+      printf("Erreur lors de la redimension de l'image!\n");
+      return;
+   }
+
+   // Créer un widget image à partir du pixbuf
+   GtkWidget *image = gtk_image_new_from_pixbuf(pb);
+   g_object_unref(pb);
+
+   if (image == NULL) {
+      printf("Erreur lors de la création de l'image\n");
+      return;
+   }
+
+   // Appliquer l'image au bouton
+   gtk_button_set_image(GTK_BUTTON(bouton), image);
+}
+
 void gerer_clic_coffre(GtkWidget *widget, gpointer data) {
    donnees_jeu *donnees = (donnees_jeu *)data;
    int coffre_clique = -1;
@@ -208,14 +237,13 @@ void gerer_clic_coffre(GtkWidget *widget, gpointer data) {
       donnees->tresor_choisi = coffre_a_reveler;
       donnees->coffre_ouvert[coffre_a_reveler] = TRUE;
 
-      gtk_button_set_image(GTK_BUTTON(donnees->bouton[coffre_a_reveler]),
-         gtk_image_new_from_file("./coffre_vide.jpg"));
+      charger_nouvelle_image(donnees->bouton[coffre_a_reveler], "./coffre_vide.jpg");
+
 
    } else if(donnees->nb_clique == 2) {
 
       if (coffre_clique == donnees->tresor_bon) {
-         gtk_button_set_image(GTK_BUTTON(donnees->bouton[coffre_clique]),
-                              gtk_image_new_from_file("./coffre_plein.jpg"));
+         charger_nouvelle_image(donnees->bouton[coffre_clique], "./coffre_plein.jpg");
          int nv_victoires = get_victoires(donnees) + 1;
          printf("Victoire avant mise à jour : %d\n", get_victoires(donnees));
          set_victoires(donnees, nv_victoires);
@@ -224,9 +252,8 @@ void gerer_clic_coffre(GtkWidget *widget, gpointer data) {
          gtk_label_set_text(GTK_LABEL(get_label_etat_partie(donnees)),
                            "Vous avez gagné !");
 
-     } else {
-         gtk_button_set_image(GTK_BUTTON(donnees->bouton[coffre_clique]),
-                              gtk_image_new_from_file("./coffre_vide.jpg"));
+   } else {
+         charger_nouvelle_image(donnees->bouton[coffre_clique], "./coffre_vide.jpg");
          int nv_defaites = get_defaites(donnees) + 1;
          printf("Défaite avant mise à jour : %d\n", get_defaites(donnees));
          set_defaites(donnees, nv_defaites);
@@ -234,9 +261,7 @@ void gerer_clic_coffre(GtkWidget *widget, gpointer data) {
          maj_v_d(get_label_score(donnees), donnees);
          gtk_label_set_text(GTK_LABEL(get_label_etat_partie(donnees)),
                            "Vous avez perdu !");
-         gtk_button_set_image(GTK_BUTTON(donnees->bouton[donnees->tresor_bon]),
-                              gtk_image_new_from_file("./coffre_vide.jpg"));
-     }
+   }
       donnees->etat_partie = FALSE;
       gerer_etat_partie(donnees);
    }
@@ -249,7 +274,7 @@ GtkWidget *charge_image_bouton(const char *chemin_image) {
       return NULL;
    }
 
-   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 100, 100, GDK_INTERP_NEAREST);
+   GdkPixbuf *pb = gdk_pixbuf_scale_simple(pb_temp, 85, 90, GDK_INTERP_NEAREST);
    g_object_unref(pb_temp);
    if(pb == NULL) {
       printf("Erreur lors de la redimension de l'image!\n");
@@ -291,8 +316,7 @@ void recommencer_partie(GtkWidget *widget, gpointer data) {
    // Réinitialiser tous les coffres
    for (int i = 0; i < 3; i++) {
       donnees->coffre_ouvert[i] = FALSE;
-      gtk_button_set_image(GTK_BUTTON(donnees->bouton[i]),
-                           gtk_image_new_from_file("./coffre_ferme.jpg"));
+      charger_nouvelle_image(donnees->bouton[i], "./coffre_ferme.jpg");
    }
 
    gerer_etat_partie(donnees);

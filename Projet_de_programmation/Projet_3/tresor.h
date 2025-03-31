@@ -40,6 +40,7 @@ void gerer_etat_partie(donnees_jeu *donnees);
 
 // Fonctions auxiliaires
 GtkWidget *charge_image_bouton(const char *chemin_image);
+void charger_nouvelle_image(GtkWidget *bouton, const char *chemin_image);
 void maj_v_d(GtkWidget *label, donnees_jeu *donnees);
 
 
