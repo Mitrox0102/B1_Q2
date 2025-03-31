@@ -9,6 +9,8 @@ typedef struct donnees_jeu_t donnees_jeu;
 // Fonctions de base
 donnees_jeu* creer_donnees_jeu(void);
 GtkWidget *creer_fenetre(void);
+GtkWidget *creer_v_d(donnees_jeu *donnees);
+GtkWidget *creer_etat_partie(donnees_jeu *donnees);
 void detruire_donnees_jeu(donnees_jeu *donnees);
 void creer_recommencer(donnees_jeu *donnees, GtkWidget *pFenetre);
 void creer_bouton(donnees_jeu *donnees);
