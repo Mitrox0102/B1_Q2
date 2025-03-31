@@ -1,0 +1,8 @@
+produit_scalaire: 
+                     tmp=0
+                     i=0
+                     if(i<n)
+                        tmp+=v1[i]*v2[i]
+                        i++
+                        jmp loop
+                     return tmp
