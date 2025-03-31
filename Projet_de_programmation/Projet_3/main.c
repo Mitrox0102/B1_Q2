@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
     GtkWidget *pLabel_v_d, *pLabel_etat_partie;
     
     sprintf(v_d, "Victoires: %d    Défaites: %d", 
-              get_victoires(donnees), get_defaites(donnees));
+                get_victoires(donnees), get_defaites(donnees));
 
     pLabel_v_d = gtk_label_new(v_d);
     gtk_widget_set_size_request(pLabel_v_d, 420, 35);
@@ -39,43 +39,26 @@ int main(int argc, char **argv) {
     set_label_etat_partie(donnees, pLabel_etat_partie);
 
     // Création du bouton Recommencer
-    GtkWidget *pRecommencer = gtk_button_new_with_mnemonic("_Recommencer");
-    GtkAccelGroup *groupe_accel = gtk_accel_group_new();
-    gtk_window_add_accel_group(GTK_WINDOW(pFenetre), groupe_accel);
-    gtk_widget_add_accelerator(pRecommencer, "clicked", groupe_accel, 
-                              'r', GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    creer_recommencer(donnees, pFenetre);
 
     // Création des boutons coffres
-    GtkWidget *pBouton[3];
-    for(int i = 0; i < 3; i++) {
-        pBouton[i] = charge_image_bouton("./coffre_ferme.jpg");
-        if(pBouton[i] == NULL) {
-            g_print("Erreur lors de la création du bouton avec image\n");
-            return EXIT_FAILURE;
-        }
-        // Enregistrement des boutons dans la structure
-        set_bouton(donnees, i, pBouton[i]);
-        
-        // Connexion des signaux pour chaque bouton
-        g_signal_connect(G_OBJECT(pBouton[i]), "clicked", 
-                        G_CALLBACK(gerer_clic_coffre), donnees);
-    }
+    creer_bouton(donnees);
 
     // Enregistrement du bouton recommencer
-    set_recommencer(donnees, pRecommencer);
+    set_recommencer(donnees, get_recommencer(donnees));
     
     // Connexion du signal pour le bouton recommencer
-    g_signal_connect(G_OBJECT(pRecommencer), "clicked", 
+    g_signal_connect(G_OBJECT(get_recommencer(donnees)), "clicked", 
                 G_CALLBACK(recommencer_partie), donnees);
 
     // Organisation des widgets
     gtk_box_pack_start(GTK_BOX(pVBox), pLabel_v_d, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(pVBox), pLabel_etat_partie, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(pVBox), pRecommencer, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(pVBox), get_recommencer(donnees), FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(pVBox), pHBox, FALSE, FALSE, 30);
 
     for(int i = 0; i < 3; i++) {
-        gtk_box_pack_start(GTK_BOX(pHBox), pBouton[i], FALSE, FALSE, 30);
+        gtk_box_pack_start(GTK_BOX(pHBox), get_bouton(donnees, i), FALSE, FALSE, 30);
     }
 
     gtk_container_add(GTK_CONTAINER(pFenetre), pVBox);

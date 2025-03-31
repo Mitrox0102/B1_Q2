@@ -10,6 +10,8 @@ typedef struct donnees_jeu_t donnees_jeu;
 donnees_jeu* creer_donnees_jeu(void);
 GtkWidget *creer_fenetre(void);
 void detruire_donnees_jeu(donnees_jeu *donnees);
+void creer_recommencer(donnees_jeu *donnees, GtkWidget *pFenetre);
+void creer_bouton(donnees_jeu *donnees);
 
 // Getters
 int get_victoires(const donnees_jeu *donnees);
