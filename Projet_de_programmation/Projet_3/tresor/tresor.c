@@ -49,8 +49,13 @@ donnees_jeu* creer_donnees_jeu(void) {
 
    // Initialisation des boutons
    for (int i = 0; i < 3; i++) {
+      donnees->bouton[i] = NULL;
       donnees->coffre_ouvert[i] = FALSE;
    }
+
+   donnees->recommencer = NULL;
+   donnees->label_score = NULL;
+   donnees->label_etat_partie = NULL;
 
    return donnees;
 }
@@ -245,7 +250,8 @@ void set_label_etat_partie(donnees_jeu *donnees, GtkWidget *label) {
 
 // Fonction pour libérer la mémoire allouée pour les données du jeu
 void detruire_donnees_jeu(donnees_jeu *donnees) {
-   if(donnees != NULL) {
+   if (donnees != NULL) {
+      // Libérer la structure elle-même
       free(donnees);
    }
 }
