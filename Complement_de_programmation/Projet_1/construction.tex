@@ -1,0 +1,33 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dans cette section, il est demandé d'appliquer l'approche constructive pour la         %
+% construction de votre code.                                                            %
+%                                                                                        %
+% Pour chaque Sous-Problème (une sous-section/SP):                                       %
+% - {Pré} INIT {INV}                                                                     %
+% - déterminer le Critère d'Arrêt (et donc le Gardien de Boucle)                         %
+% - {INV & B} ITER {INV}                                                                 %
+% - {INV & !B} END {Post}                                                                %
+% - Fonction de Terminaison (pensez à justifier sur base de l'Invariant Graphique)       %
+% (une sous-sous-section/tiret)                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Approche Constructive}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lstlisting}[caption={Un programme tout simple}]
+int main(void)
+{
+    // Les commandes Latex sont permises dans les commentaires sur une ligne. Exemple : $x_i \leq a ^b$
+    printf("Bonjour tout le monde !");
+    /*
+    Dans les commentaires sur plusieurs lignes, elles doivent être entourées
+    de symboles définis par l'option « escapeinside » de \lstset
+    (>\coms{$\sum_{i = 1}^N 1 = N$}<)
+    La commande « \coms » permet de colorer correctement le code latex ajouté.
+    Les accents et tous les autres diacritiques sont permis : àÀçÇéÉèÈêÊœŒ...
+    */
+    return 1; (>\label{code:ret}<)
+}
+\end{lstlisting}
+
+Il est possible de faire référence à la ligne \ref{code:ret} de l'extrait de code.
