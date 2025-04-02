@@ -122,35 +122,32 @@ def dessiner_afficheur(sortie_CD4511, sortie_CD4028):
 def composant_CD4511(entree):
    print(f"Entrée : {entree}")
    decimale = sum(entree[3 - i] * (2**i) for i in range(4))
-   tdv = np.array([[1, 1, 1, 1, 1, 1, 0],
-                  [0, 1, 1, 0, 0, 0, 0],
-                  [1, 1, 0, 1, 1, 0, 1],
-                  [1, 1, 1, 1, 0, 0, 1],
-                  [0, 1, 1, 0, 0, 1, 1],
-                  [1, 0, 1, 1, 0, 1, 1],
-                  [1, 0, 1, 1, 1, 1, 1],
-                  [1, 1, 1, 0, 0, 0, 0],
-                  [1, 1, 1, 1, 1, 1, 1],
-                  [1, 1, 1, 1, 0, 1, 1]])
+   tdv = np.array([
+      [0, 0, 1, 0, 1, 1, 1], #(H)
+      [1, 0, 0, 1, 1, 1, 1], #(E)
+      [0, 0, 0, 1, 1, 1, 0], #(L)
+      [0, 0, 1, 1, 1, 0, 1], #(O)
+      [0, 1, 1, 1, 1, 1, 1], #(W)
+      [0, 0, 0, 0, 1, 0, 1], #(R)
+      [0, 1, 1, 1, 1, 0, 1], #(D)
+      [0, 0, 0, 0, 0, 0, 0]  #Espace
+   ])
    return np.array(tdv[decimale])
 
 def composant_CD4028(entree):
    decimale = sum(entree[3 - i] * (2**i) for i in range(4))
-   tdv = np.eye(6, 7, dtype=int)
-   return tdv[decimale]
+   tdv = np.eye(7, dtype=int)
+
+   if decimale < 7:
+         return tdv[decimale]
+   else:
+         return np.zeros(7,dtype=int)
+      
 
 def mettre_a_jour_horloge():
    global valeurs_horloge
-   maintenant = dt.datetime.now()
-   heures = maintenant.hour
-   minutes = maintenant.minute
-   secondes = maintenant.second
-   valeurs_horloge[0] = heures // 10
-   valeurs_horloge[1] = heures % 10
-   valeurs_horloge[2] = minutes // 10
-   valeurs_horloge[3] = minutes % 10
-   valeurs_horloge[4] = secondes // 10
-   valeurs_horloge[5] = secondes % 10
+   message = [0, 1, 2, 2, 3, 7, 4, 3, 5, 2, 6] 
+   valeurs_horloge = np.roll(message, -num_afficheur)[:6]
 
 def sortie_memorisee():
    global valeurs_horloge, num_afficheur
@@ -207,8 +204,8 @@ pin_bouton = (pos_bouton[0] + 13, pos_bouton[1] + 13)
 pygame.init()
 
 sig_horloge = 0
-pygame.time.set_timer(pygame.USEREVENT, 500)
-pygame.time.set_timer(pygame.USEREVENT + 1, 40)
+pygame.time.set_timer(pygame.USEREVENT, 600)
+pygame.time.set_timer(pygame.USEREVENT + 1, 400)
 
 
 fenetre = pygame.display.set_mode(dimensions_fenetre)
@@ -246,6 +243,8 @@ while True:
       elif evenement.type == pygame.USEREVENT + 1:
          num_afficheur = (num_afficheur + 1) % 6
    sortie_bouton = gerer_click()
+   if sortie_bouton == 1:
+      num_afficheur = (num_afficheur + 1) % len(valeurs_horloge)  # Décalage manuel
    print(f"Sortie bouton : {sortie_bouton}, Valeurs horloge : {valeurs_horloge}")
    fenetre.fill(couleur_fond)
 
