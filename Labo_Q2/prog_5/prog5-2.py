@@ -180,11 +180,6 @@ def connexion_bouton(sortie_bouton):
 
    return
 
-def defilement():
-   global valeur_memorisee
-   valeur_memorisee = np.roll(valeur_memorisee, -1)
-   
-
 ### Paramètre(s)
 
 dimensions_fenetre = (1100, 600)
@@ -236,9 +231,9 @@ while True:
    for evenement in pygame.event.get():
       if evenement.type == pygame.QUIT:
          pygame.quit()
-         sys.exit()
+         sys.exit(0)
       elif evenement.type == pygame.USEREVENT:
-         defilement()
+         valeur_memorisee = np.roll(valeur_memorisee, -1)
       elif evenement.type == pygame.USEREVENT + 1:
          num_afficheur = (num_afficheur + 1) % 6
    sortie_bouton = gerer_click()
