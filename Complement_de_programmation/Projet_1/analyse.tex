@@ -8,3 +8,45 @@
 
 \section{Définition et Analyse du Problème}\label{analyse}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Définition du Problème}
+
+\subsubsection{Input}
+\begin{itemize}
+   \item $T$ : Un tableau d'entiers
+   \item $N$ : La taille du tableau
+\end{itemize}
+
+\subsubsection{Output}
+\begin{itemize}
+   \item La taille $k$ du plus long préfixe qui est aussi un suffixe du tableau
+\end{itemize}
+
+\subsubsection{Caractérisation des inputs}
+\begin{itemize}
+   \item \textbf{T} est un tableau non nul d'entiers
+      \begin{itemize}
+         \item \textbf{int} *T;
+      \end{itemize}
+   \item \textbf{N} est un entier non signé tel que $N \geq 0$
+      \begin{itemize}
+         \item \textbf{unsigned int} N;
+      \end{itemize}
+\end{itemize}
+
+\subsection{Analyse du Problème}
+
+On va découper le problème en sous-problèmes (SPs) afin de mieux l'analyser.
+Un sous-problème est une partie du problème qui peut être résolu indépendamment
+et qui peut être combiné avec d'autres sous-problèmes pour résoudre le problème
+global. Ils peuvent être de plusieurs types:
+\begin{itemize}
+   \item Lecture au clavier.
+   \item Affichage à l'écran
+   \item Réaliser une action (Vérifier une propriété, une condition, sommer,...)
+   \item \'Enumérer des valeurs et effectuer une action
+\end{itemize}
+Dans notre cas, nous avons affaire à deux sous-problèmes:
+\begin{itemize}
+   \item \textbf{SP1} : \'Enumération des tailles possbiles de préfixe-suffixe.
+   \item \textbf{SP2} : Comparer les valeurs de préfixe et de suffixe.
+\end{itemize}

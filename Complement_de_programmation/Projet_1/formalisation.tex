@@ -6,24 +6,19 @@
 \section{Formalisation du Problème}\label{formalisation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Utilisez les bons opérateurs}
+Soit \textbf{prefixe\_suffixe(*T, N)} , une notation telle que:
+\begin{itemize}
+   \item $T$ un tableau d'entiers.
+   \item $N$ est la taille du tableau $(N \geq 0)$.
+\end{itemize}
 
-Voir la table \ref{table:op}.
+\vspace{0.2cm}
+On a $prefixe\_suffixe (*T, N) \equiv 0 \leq k \leq N-1, T[0, k] == T[N-k, N-1]$.
 
-\begin{table}[!h]
-\centering
-\begin{tabular}{l c}
-Nom & Op \\
-\hline
-ET & $\land$ \\
-OU & $\lor$ \\
-Quantification universelle & $\forall$ \\
-Quantification existentielle & $\exists$ \\
-\end{tabular}
-\caption{Opérateurs les plus usuels en logique}
-\label{table:op}
-\end{table}
+\vspace{0.4cm}
+Soit $max\_prefixe\_suffixe(*T, i , N)$ une notation pour le plus long 
+préfixe-suffixe de T.
 
-\subsection{Trouver un symbole précis}
-
-Voir ce site : \url{http://detexify.kirelabs.org/classify.html}. Il suffit de dessiner le symbole dont vous avez besoin et le site trouvera (normalement) la bonne commande à taper (ainsi que le package à éventuellement inclure si besoin est).
+\vspace{0.2cm}
+$max\_prefixe\_suffixe(*T, i , N) \equiv 0 \leq i \leq k < N, max(T[0, i-1] == T[N - k + i
+, N-1])$.
