@@ -13,7 +13,7 @@
 
  /*
   * @pre: T != NULL
-  * @pre: N >= 0
+  * @pre: N > 0
   * @post: retourne la longueur du plus long préfixe et suffixe commun.
   */
 int prefixe_suffixe(int *T, const unsigned int N);

@@ -12,7 +12,7 @@ LD= gcc
 LDFLAGS=
 
 # Files
-EXEC= programme
+EXEC= prefixe_suffixe
 MODULES= main-prefixe_suffixe.c prefixe_suffixe.c
 OBJECTS= main.o prefixe_suffixe.o
 

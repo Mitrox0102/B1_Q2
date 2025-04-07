@@ -5,7 +5,7 @@
 
 
 int prefixe_suffixe(int *T, const unsigned N){
-  assert(T != NULL && N >= 0);
+  assert(T != NULL && N > 0);
   int k = N-1;
   int i = 0;
 

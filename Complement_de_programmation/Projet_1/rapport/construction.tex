@@ -16,7 +16,7 @@
 
 \subsection{Sous-problème 1}
 
-Voici les instructions ainsi que la construction instruction par instruction pour le sous-problème 1.
+Voici le code ainsi que la construction instruction par instruction pour le sous-problème 1.
 \begin{lstlisting}[caption={Sous-problème 1}]
     (>\coms{\{Pré $\equiv N = N_{0} \land 0 \leq N$\}}<)
     int k = N - 1;
@@ -52,6 +52,6 @@ Voici les instructions ainsi que la construction instruction par instruction pou
       i++;
       (>\coms{\{$N = N_{0} \land T = T_{0} \land 0 < i \leq k < N - 1 \land T[i] = T[N - k + i]$\}}<)
     }
-    (>\coms{\{Inv $\land \lnot B \equiv T = T_{0} \land i == k \lor T[i] \ne T[N - k + i] \land i = \text{max\_pref\_suff}(*T, i, N)$\}}<)
+    (>\coms{\{Inv $\land \lnot B \equiv T = T_{0} \land i == k \lor T[i] \ne T[N - k + i] \land i = \text{max\_prefixe\_suffixe}(*T, i, N)$\}}<)
 \end{lstlisting}
 

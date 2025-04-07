@@ -14,8 +14,8 @@ La raison d'être de cette section est de définir les invariants nécessaires �
 construction du programme. Les invariants sont des propriétés qui doivent être
 vérifiées à chaque étape de l'exécution du programme. Ils permettent de garantir
 que le programme fonctionne correctement et produit les résultats attendus. Il y
-a une règle qui est que chaque boucle nécessite un invriant. Nous aurons donc 2
-invariants graphiques et 2 invariants formels
+a une règle qui est que chaque boucle nécessite un invariant. Nous aurons donc 2
+invariants graphiques et 2 invariants formels.
 
 Nous allons donc définir les invariants graphiques. Le premier aura pour objectif
 de définir la boucle de décrementation de $k$ et le seconde couvrira la boucle
@@ -29,7 +29,7 @@ qu'elle atteigne 0. Attention, elle atteint zéro uniquement si lors du SP2 nous
 n'avons trouvé aucune correspondance dans le tableau.
 \begin{figure}[h]
    \centering
-   \includegraphics[width=0.5\textwidth]{sp1.pdf}
+   \includegraphics[width=0.7\textwidth]{sp1.pdf}
    \caption{Invariant graphique 1}
    \label{fig:invariant1}
 \end{figure}
@@ -43,11 +43,11 @@ $k > 0$.
    \fbox{
       \begin{minipage}{0.5\textwidth}
       \begin{center}
-      $N = N_0$ \\
+      $N = N_0$ $\wedge$ $T = T_0$ \\
       $\wedge$ \\
       $ 0 \leq k \leq N - 1$ \\
       $\wedge$ \\
-      $k \ne est\_pref\_suff(*T, k, N)$ \\
+      $\forall j,$ $k < j \leq N-1$: $\neg$ $est\_pref\_suff(T, j, N)$ \\
       \end{center}
       \end{minipage}
    }
@@ -61,7 +61,7 @@ valeurs du tableau entre $T[i]$ et $T[N-k+i]$. La valeur de $i$ est initialisée
 
 \begin{figure}[h]
    \centering
-   \includegraphics[width=0.5\textwidth]{sp2.pdf}
+   \includegraphics[width=0.7\textwidth]{sp2.pdf}
    \caption{Invariant graphique 2}
    \label{fig:invariant2}
 \end{figure}
@@ -78,7 +78,7 @@ $i < k$.
       $\wedge$ \\
       $ 0 \leq i < k$ $< N$\\
       $\wedge$ \\
-      $i = max\_pref\_suff\_(*T, i ,N)$ \\
+      $\forall j$, $0 \leq j < i$ : $T[j]$ = $T[N - k + j]$ \\
       \end{center}
       \end{minipage}
    }

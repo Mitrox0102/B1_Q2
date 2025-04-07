@@ -10,7 +10,7 @@ Nous voudrions que cette fonction nous retourne la taille du nombre d'éléments
 étant à la fois préfixe et suffixe de ce tableau.
 
 \subsection{Fonctionnement de la fonction}
-Soit un tableau $T$, contenant N valeur valeurs entières $(N \geq 0)$. Nous 
+Soit un tableau $T$, contenant N valeurs entières $(N \geq 0)$. Nous 
 voulons construire une fonction qui va retourner un entier $k$ $(k \in [0, ...,
  N-1])$ tel que le sous tableau $T[0,\space k-1]$ est un préfixe de $T$ et 
 $T[N-k, N-1]$ est un suffixe de $T$, c'est-à-dire que leurs éléments soient
@@ -27,7 +27,7 @@ Soit $F$ un tableau de 10 entiers et lg contient la taille du prefixe-suffixe:
 \begin{lstlisting}[language=C, caption=Exemple d'utilisation]
 int F[10] = {1, 2, 3, 1, 2, 3, 1, 2, 3, 1};
 unsigned int lg = prefixe_suffixe(F, 10);
-printf("Le plus long prefixe-suffixe du tabLeau est de taille %u.\n", lg);
+printf("Le plus long prefixe-suffixe du tableau est de taille %u.\n", lg);
 \end{lstlisting}
 
 Le printf va nous afficher: Le plus long prefixe-suffixe du tableau est de
