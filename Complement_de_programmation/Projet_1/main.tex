@@ -33,6 +33,8 @@
 \usepackage{eurosym}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{listings}
+\usepackage{amsmath}
 \usepackage[table,xcdraw,dvipsnames]{xcolor}
 
 % Change le nom par défaut des listing
@@ -59,6 +61,7 @@
     texcl=true, % Commentaires sur une ligne interprétés en Latex
     showstringspaces=false, % Ne montre pas les espace dans les chaines de caractères
     escapeinside={(>}{<)}, % Permet de mettre du latex entre des <( et )>.
+    moredelim=[is][\small]{(>}{<)},
     inputencoding=utf8,
     literate=
   {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1

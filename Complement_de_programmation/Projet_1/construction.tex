@@ -12,22 +12,42 @@
 % (une sous-sous-section/tiret)                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Approche Constructive}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{lstlisting}[caption={Un programme tout simple}]
-int main(void)
-{
-    // Les commandes Latex sont permises dans les commentaires sur une ligne. Exemple : $x_i \leq a ^b$
-    printf("Bonjour tout le monde !");
-    /*
-    Dans les commentaires sur plusieurs lignes, elles doivent être entourées
-    de symboles définis par l'option « escapeinside » de \lstset
-    (>\coms{$\sum_{i = 1}^N 1 = N$}<)
-    La commande « \coms » permet de colorer correctement le code latex ajouté.
-    Les accents et tous les autres diacritiques sont permis : àÀçÇéÉèÈêÊœŒ...
-    */
-    return 1; (>\label{code:ret}<)
-}
+\subsection{Sous-problème 1}
+\begin{lstlisting}[caption={Sous-problème 1}]
+    (>\coms{\{Pré $\equiv T = T_{0} \land N \geq 0$\}}<)
+    unsigned int k = N - 1;
+    (>\coms{\{$T = T_{0} \land N \geq 0 \land k = N-1$\}}<)
+    while (k > 0) {
+        // SP2
+        k --;
+    }
+    (>\coms{\{Post $\equiv T = T_{0} \land N \geq 0$\}}<)
 \end{lstlisting}
 
-Il est possible de faire référence à la ligne \ref{code:ret} de l'extrait de code.
+
+\subsection{Sous-problème 2}
+
+
+\begin{lstlisting}[caption={Sous-problème 2}]
+(>\coms{\{Pré $\equiv T = T_{0}$\}}<)
+unsigned int k = N - 1;
+(>\coms{\{$T = T_{0} \land k = N - 1$\}}<)
+while(i < k && T[i] == T[N - k + i]){
+    (>\coms{\{$T = T_{0} \land k = N - 1 \land i < k \land T[i] == T[N - k + i]$\}}<)
+    i++;
+    (>\coms{\{$T = T_{0} \land k = N - 1 \land i + 1 \leq k \land T[i] == T[N - k + i]$\}}<)
+}
+if (i == k){
+    (>\coms{\{$T = T_{0} \land k = N - 1 \land i + 1 = k \land T[i] == T[N - k + i]$\}}<)
+    return k;
+}
+else{
+    (>\coms{\{$T = T_{0} \land k \ne N - 1 \land i < k \land T[i] == T[N - k + i]$\}}<)
+    i = 0;
+    (>\coms{\{$T = T_{0} \land k = N - 1 \land i = 0$\}}<)
+}
+(>\coms{\{Post $\equiv T = T_{0} \land i == k \lor T[i] \ne T[N - k + i]$\}}<)
+\end{lstlisting}
