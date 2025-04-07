@@ -13,12 +13,27 @@ Soit \textbf{prefixe\_suffixe(*T, N)} , une notation telle que:
 \end{itemize}
 
 \vspace{0.2cm}
-On a $prefixe\_suffixe (*T, N) \equiv 0 \leq k \leq N-1, T[0, k] == T[N-k, N-1]$.
+On a $prefixe\_suffixe (*T, N) \equiv \forall k, 0 \leq k \leq N-1 : T[0, k] = T[N-k, N-1]$.
 
 \vspace{0.4cm}
-Soit $max\_prefixe\_suffixe(*T, i , N)$ une notation pour le plus long 
-préfixe-suffixe de T.
+Soit \textbf{est\_pref\_suff(T, k, N)} une notation telle que:
+\begin{itemize}
+   \item $T$ est un tableau d'entiers
+   \item $k$ est la taille du préfixe/suffixe à tester
+   \item $N$ est la taille du tableau
+\end{itemize}
 
 \vspace{0.2cm}
-$max\_prefixe\_suffixe(*T, i , N) \equiv 0 \leq i \leq k < N, max(T[0, i-1] == T[N - k + i
-, N-1])$.
+$est\_pref\_suff(T, k, N) \equiv \forall i, 0 \leq i < k : T[i] = T[N-k+i]$
+
+\vspace{0.4cm}
+Soit \textbf{max\_prefixe\_suffixe(*T, i , N)} une notation pour le plus long 
+préfixe-suffixe de T telle que:
+\begin{itemize}
+   \item $T$ est un tableau d'entiers
+   \item $i$ est la position de comparaison
+   \item $N$ est la taille du tableau
+\end{itemize}
+
+\vspace{0.2cm}
+$max\_prefixe\_suffixe(*T, i , N) \equiv \exists k, 0 \leq i \leq k < N : est\_pref\_suff(T, k, N)$

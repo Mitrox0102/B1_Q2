@@ -12,42 +12,46 @@
 % (une sous-sous-section/tiret)                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Approche Constructive}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Sous-problème 1}
+
+Voici les instructions ainsi que la construction instruction par instruction pour le sous-problème 1.
 \begin{lstlisting}[caption={Sous-problème 1}]
-    (>\coms{\{Pré $\equiv T = T_{0} \land N \geq 0$\}}<)
-    unsigned int k = N - 1;
-    (>\coms{\{$T = T_{0} \land N \geq 0 \land k = N-1$\}}<)
+    (>\coms{\{Pré $\equiv N = N_{0} \land 0 \leq N$\}}<)
+    int k = N - 1;
+    (>\coms{\{Inv $\equiv N = N_{0} \land 0 \leq N \land k = N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
     while (k > 0) {
-        // SP2
-        k --;
+      (>\coms{\{Inv $\land B \equiv N = N_{0} \land 0 \leq N \land k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N) \land k > 0$\}}<)
+
+      (>\coms{\{N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
+      // SP2
+      if (i == k){
+        (>\coms{\{N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k = \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
+        return k;
+      }
+      else{
+        i = 0;
+      }
+      k --;
+      (>\coms{\{Inv $\land B \equiv N = N_{0} \land 0 \leq N \land k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
     }
-    (>\coms{\{Post $\equiv T = T_{0} \land N \geq 0$\}}<)
+    (>\coms{\{Inv $\land \lnot B \equiv T = T_{0} \land N \geq 0 \land k = 0$\}}<)
 \end{lstlisting}
 
 
 \subsection{Sous-problème 2}
 
-
+Voici les instructions ainsi que la construction instruction par instruction pour le sous-problème 2.
 \begin{lstlisting}[caption={Sous-problème 2}]
-(>\coms{\{Pré $\equiv T = T_{0}$\}}<)
-unsigned int k = N - 1;
-(>\coms{\{$T = T_{0} \land k = N - 1$\}}<)
-while(i < k && T[i] == T[N - k + i]){
-    (>\coms{\{$T = T_{0} \land k = N - 1 \land i < k \land T[i] == T[N - k + i]$\}}<)
-    i++;
-    (>\coms{\{$T = T_{0} \land k = N - 1 \land i + 1 \leq k \land T[i] == T[N - k + i]$\}}<)
-}
-if (i == k){
-    (>\coms{\{$T = T_{0} \land k = N - 1 \land i + 1 = k \land T[i] == T[N - k + i]$\}}<)
-    return k;
-}
-else{
-    (>\coms{\{$T = T_{0} \land k \ne N - 1 \land i < k \land T[i] == T[N - k + i]$\}}<)
-    i = 0;
-    (>\coms{\{$T = T_{0} \land k = N - 1 \land i = 0$\}}<)
-}
-(>\coms{\{Post $\equiv T = T_{0} \land i == k \lor T[i] \ne T[N - k + i]$\}}<)
+    (>\coms{\{Pré $\equiv N = N_{0} \land T = T_{0} \land 0 < k \leq N - 1$\}}<)
+    int i = 0;
+    (>\coms{\{Inv $\equiv N = N_{0} \land T = T_{0} \land i = 0 < k \leq N - 1$\}}<)
+    while(i < k && T[i] == T[N - k + i]){
+      (>\coms{\{Inv $\land B \equiv N = N_{0} \land T = T_{0} \land 0 \leq i < k < N - 1 \land T[i] = T[N - k + i]$\}}<) 
+      i++;
+      (>\coms{\{$N = N_{0} \land T = T_{0} \land 0 < i \leq k < N - 1 \land T[i] = T[N - k + i]$\}}<)
+    }
+    (>\coms{\{Inv $\land \lnot B \equiv T = T_{0} \land i == k \lor T[i] \ne T[N - k + i] \land i = \text{max\_pref\_suff}(*T, i, N)$\}}<)
 \end{lstlisting}
+

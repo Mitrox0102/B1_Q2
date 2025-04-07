@@ -28,7 +28,7 @@ possibles pour le préfixe-suffixe. Pour ceci définissons la fonction:
 \end{itemize}
 
 \vspace{0.4cm}
-Il nous faut donc écrire une boucle while qui va balayer toutes les valeurs 
+Il nous faut donc écrire une boucle while qui va balayer toutes les valeurs
 possibles de $k$ de $N-1$ à 0.
 \begin{itemize}
    \item \textbf{Déclaration du compteur:}
@@ -54,6 +54,10 @@ possibles de $k$ de $N-1$ à 0.
 \end{itemize}
 
 \begin{lstlisting}[language=C, caption=SP1]
+/*
+ * @pre:(>$N$ initialisé $\wedge$ N > 0<)
+ * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\wedge$ $k \geq 0$<)
+ */
 unsigned int k = N - 1;
 while (k > 0) {
    // SP2
@@ -125,8 +129,12 @@ valeurs de préfixe $i$ et de suffixe $N-k+i$.
 
 \vspace{0.4cm}
 \begin{lstlisting}[language=C, caption=SP2]
+/*
+ * @pre:(>$T$ initialisé $\wedge$ $N$ > 0 $\wedge$ $k$ initialisé $\wedge$ $0 \leq i < k$<)
+ * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\wedge$ $k \geq 0$<)
+ */
 unsigned int i = 0;
-while(i < k && T[i] == T[N - k +i]){
+while(i < k && T[i] == T[N - k + i]){
    i++;
    }
    if (i == k){

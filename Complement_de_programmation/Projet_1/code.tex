@@ -5,6 +5,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Code Complet}\label{code}
 %%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Code du header}
+\begin{lstlisting}[caption={prefixe\_suffixe.h}]
+  #ifndef __PREFIXE_SUFFIXE__
+  #define __PREFIXE_SUFFIXE__
+ 
+  /*
+   * @pre: T initialisé (>$\wedge$<) N >= 0
+   * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T, i , N)$<)
+   */
+ int prefixe_suffixe(int *T, const unsigned int N);
+ 
+ #endif
+\end{lstlisting}
 
 \subsection{Code du module}
 \begin{lstlisting}[caption={prefixe\_suffixe.c}]
@@ -15,6 +28,8 @@
     
     
     int prefixe_suffixe(int *T, const unsigned N){
+      assert(T != NULL && N >= 0);
+
       int k = N-1;
       int i = 0;
     
