@@ -54,15 +54,15 @@ possibles de $k$ de $N-1$ à 0.
 \end{itemize}
 
 \begin{lstlisting}[language=C, caption=SP1]
-/*
- * @pre:(>$N$ initialisé $\wedge$ N > 0<)
- * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\wedge$ $k \geq 0$<)
- */
-unsigned int k = N - 1;
-while (k > 0) {
-   // SP2
-   k--;
-}
+   /*
+    * @pre: (>$N$ initialisé $\land$ $N > 0$<)
+    * @post: (>$T = T_0$ $\land$ $N = N_0$ $\land$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\land$ $k \geq 0$<)
+    */
+   unsigned int k = N - 1;
+   while (k > 0) {
+      // SP2
+      k--;
+   }
 \end{lstlisting}
 
 \subsection{Sous-problème 2}
@@ -129,18 +129,17 @@ valeurs de préfixe $i$ et de suffixe $N-k+i$.
 
 \vspace{0.4cm}
 \begin{lstlisting}[language=C, caption=SP2]
-/*
- * @pre:(>$T$ initialisé $\wedge$ $N$ > 0 $\wedge$ $k$ initialisé $\wedge$ $0 \leq i < k$<)
- * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\wedge$ $k \geq 0$<)
- */
-unsigned int i = 0;
-while(i < k && T[i] == T[N - k + i]){
-   i++;
+   /*
+    * @pre: (>$T$ initialisé $\land$ $N > 0$ $\land$ $k$ initialisé $\land$ $0 \leq i < k$<)
+    * @post: (>$T = T_0$ $\land$ $N = N_0$ $\land$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\land$ $k \geq 0$<)
+    */
+   unsigned int i = 0;
+   while (i < k && T[i] == T[N - k + i]) {
+      i++;
    }
-   if (i == k){
+   if (i == k) {
       return k;
-   }
-   else{
+   } else {
       i = 0;
-}
+   }
 \end{lstlisting}

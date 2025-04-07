@@ -24,10 +24,10 @@ Voici les instructions ainsi que la construction instruction par instruction pou
     while (k > 0) {
       (>\coms{\{Inv $\land B \equiv N = N_{0} \land 0 \leq N \land k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N) \land k > 0$\}}<)
 
-      (>\coms{\{N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
+      (>\coms{\{$N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k \ne \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
       // SP2
       if (i == k){
-        (>\coms{\{N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k = \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
+        (>\coms{\{$N = N_{0} \land 0 \leq N \land 0 < k \leq N - 1 \land k = \text{est\_pref\_suff}(\text{*}T, i, N)$\}}<)
         return k;
       }
       else{

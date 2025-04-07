@@ -5,6 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Complexité}\label{complexite}
 %%%%%%%%%%%%%%%%%%%%
+\subsection{Analyse du code}
 
 Décomposons le code de la fonction prefixe\_suffixe en plusieurs blocs :
 \begin{lstlisting}[caption={T(A)}]
@@ -41,6 +42,8 @@ Décomposons le code de la fonction prefixe\_suffixe en plusieurs blocs :
 \begin{lstlisting}[caption={T(E)}]
     k--;
 \end{lstlisting}
+
+\subsection{Calcul de la complexité}
 
 Dans le pire des cas, on entre dans la première boucle N - 1 fois 
 (lorsque $k$ va de $N - 1$ à $1$).
