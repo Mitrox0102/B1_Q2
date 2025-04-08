@@ -2,29 +2,28 @@
 .text
 .global produit_scalaire
 .type produit_scalaire , @function
-; convention pour définir une fonction
+/ convention pour définir une fonction
 
 produit_scalaire:
-                     PUSH RBP
-                     MOV RBP , RSP
-                     ;MOV RAX , 0
-                     ;RAX ne peut pas etre utilise car
-                     ;la multiplication va modifier la valeur de RAX et RDX
-                     ;on va utiliser R12
-                     PUSH R12 ; tmp = 0
-                     MOV R12 , 0 ; tmp = 0
-                     MOV R8 , RDX ; pour la MUL aussi
-                     MOV RCX , 0 ; i = 0
-                     
+                    PUSH RBP
+                    MOV RBP , RSP
+                    PUSH R12
+                    MOV R12,0
+                    MOV R8 , RDX  
+loop:               MOV AX,0
+                    MOV AL , byte ptr[RDI + R8 ]
+                    IMUL byte ptr[RSI + R8]
+                    ADD R12W , AX
+                    DEC R8
+                    JNS loop
+                MOV AL, R12B
+                POP R12 
+                POP RBP
+                RET
 
-loop:                MOV RAX , 0
-                     MOV AL , byte ptr[ RDI + RCX ]
-                     IMUL byte ptr[ RSI + RCX ]
-                     ADD R12W , AX
-                     INC RCX
-                     CMP RCX , R8 ; i<n
-                     JL loop
-                     POP R12
-                     MOV AL , R12B
-                     POP RBP
-                     RET
+
+
+
+
+
+

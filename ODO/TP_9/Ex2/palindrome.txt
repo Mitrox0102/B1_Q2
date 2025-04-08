@@ -1,0 +1,13 @@
+est_palindrome(char *mot){
+   i=0
+   for j=0 , mot[j] != '\0', j++
+   {}
+// à la fin de cette boucle , j aura la taille de mot
+   while(j>i){
+      if(mot[i]!=mot[j])
+      ret false
+   i++
+   j--
+   }
+   ret true
+}
