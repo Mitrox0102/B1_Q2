@@ -46,9 +46,9 @@ def generer_signaux(delta_t):
 
    PERIODE_v = 1/222
 
-   R = 2
+   R = 1000
 
-   C = 0.000047
+   C = 4.7e-7
 
    global signaux_initialises, a1, tension_condensateur
    if not signaux_initialises:
@@ -60,13 +60,16 @@ def generer_signaux(delta_t):
    a1 = math.fmod(a1 + delta_t * 2 * math.pi / PERIODE_v,
                   2 * math.pi)
    
-   V1  = AMPL_v if a1 < math.pi else 0
+   if a1 < math.pi:
+      V1 = 0
+   else :
+      V1 = AMPL_v
 
    V2 = tension_condensateur
 
    I = (V1 - V2) / R
 
-   tension_condensateur = V2 + I * delta_t / C
+   tension_condensateur = I * delta_t / C
 
    P = V2 * I
    if P < 0:

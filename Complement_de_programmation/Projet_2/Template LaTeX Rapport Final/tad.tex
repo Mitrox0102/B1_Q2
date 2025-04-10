@@ -1,0 +1,66 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dans cette section, spécifiez formellement vos TADs (syntaxe et sémantique)            %
+% 1 sous-section/TAD                                                                     %
+% N'oubliez pas de justifier la complétude de vos TADs                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Spécifications Abstraites}\label{tad}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+À titre d'exemple, voici les spécifications abstraites pour le TAD \texttt{Vector} telles que vues dans le cours théorique (Chapitre 5).  À adapter en fonction de vos besoins pour le projet.
+
+\subsection{TAD Vector}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Syntaxe}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{description}
+  \item[Type:]
+    \begin{description}
+      \item Vector
+    \end{description}
+  \item[Utilise:]
+    \begin{description}
+      \item Integer
+      \item Element
+    \end{description}
+  \item[Opérations:]
+    \begin{description}
+      \item create: Integer $\to$ Vector
+      \item set: Vector $\times$ Integer $\times$ Element $\to$ Vector
+      \item get: Vector $\times$ Integer $\to$ Element
+      \item size: Vector $\to$ Integer
+    \end{description}
+\end{description}
+
+\subsubsection{Sémantique}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{description}
+  \item[Préconditions:]
+    \begin{description}
+      \item $\forall i \in$ Integer, $\forall e \in$ Element, $\forall v\in$ Vector
+      \item $\forall i \geq 0$, create(i)
+      \item $\forall i,  0 \leq i <$ size(v), get(v, i)
+      \item $\forall i, 0 \leq i <$ size(v), set(v, i, e)
+    \end{description}
+  \item[Axiomes:]
+    \begin{description}
+      \item $\forall e \in$ Element, $\forall v \in$ Vector, $\forall i, j \in$ Integer
+      \item size(create(i)) = i
+      \item size(set(v, i, e)) = size(v)
+      \item get(set(v, i, e), j) =
+      $\begin{cases}
+        e         & \textrm{If}~i=j\\
+        \textrm{get}(v, j) & \textrm{Otherwise}
+      \end{cases}$
+    \end{description}
+\end{description}
+
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{ll|cc}
+      & & \multicolumn{2}{c}{Opérations Internes}\\
+                                    &               & create($\cdot$) & set($\cdot$)\\
+      \multirow{2}{*}{Observateurs} & get($\cdot$)  & $\emptyset$     & \checkmark\\
+                                    & size($\cdot$) & \checkmark      & \checkmark\\
+    \end{tabular}
+  \end{center}
+\end{table}
