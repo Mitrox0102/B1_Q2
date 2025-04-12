@@ -38,12 +38,13 @@
 
 %%%%%%%%%%%%%%%%% TITRE %%%%%%%%%%%%%%%%
 % Complétez et décommentez les définitions de macros suivantes :
-% \newcommand{\intitule}{Le titre du travail}
-% \newcommand{\GrNbr}{1742}
-% \newcommand{\PrenomUN}{Galileo}
-% \newcommand{\NomUN}{Galilei}
-% \newcommand{\PrenomDEUX}{Octave}
-% \newcommand{\NomDEUX}{Urbain}
+\newcommand{\intitule}{TAD \& Récursivité}
+\newcommand{\GrNbr}{27}
+\newcommand{\PrenomUN}{Alexandru}
+\newcommand{\NomUN}{Dobre}
+\newcommand{\PrenomDEUX}{Sami}
+\newcommand{\NomDEUX}{Ouazouz}
+\definecolor{\vert}{RGB}{0, 140, 70}
 
 %%%%%%%% ZONE PROTÉGÉE : MODIFIEZ UNE DES DIX PROCHAINES %%%%%%%%
 %%%%%%%%            LIGNES POUR PERDRE 2 PTS.            %%%%%%%%
@@ -69,6 +70,177 @@
 % contreproductive.                                                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Introduction}
+
+Dans ce projet, notre objectif est de créer un programme visant à modéliser une
+course de cycliste à plusieurs étapes. Cette course est structurée, divisée en
+une séquence d'escales dans plusieurs villes où l'on fourni également des 
+coordonnées géographiques et, éventuellement, le meilleur temps entegistré. Une 
+course sera une séquance d'escales avec un point de départ et une arrivée.
+
+\vspace{0.4cm}
+
+Notre but est de fournir un programme implémentant ces structures en type
+abstrait de données (TAD). Nous allons les définir de manière abstraite puis les
+implémenter en C.
+
+\vspace{0.4cm}
+
+Nous avons 2 TAD à concevoir, un premier sachant gérer les escales et le second
+les courses. De plus, le second devra pouvoir être récursif si possible.
+
+\subsection{Définitions}
+
+\subsubsection{TAD: Escale}
+
+\begin{flushleft}
+   \fbox{%
+      \begin{minipage}{\textwidth}
+      \textbf{Type:}
+
+      \hspace{0.5cm}Escale
+
+      \textbf{Utilise:}
+
+      \hspace{0.5cm}Float, String
+
+      \textbf{Opérations:}
+
+      \hspace{0.5cm} \textcolor{red}{\textbf{create\_escale}}: Float $\times$ Float 
+      $\times$ String 
+      $\rightarrow$ Escale \hfill \textcolor{red}{Constructeur}
+
+      \hspace{0.5cm} \textcolor{blue}{\textbf{set\_best\_time}}: Escale $\times
+      $ Float
+      $\rightarrow$ Escale \hfill \textcolor{blue}{Transformateur}
+
+      \hspace{0.5cm} \textcolor{blue}{\textbf{calculate\_distance}}: Escale $\times
+      $ Escale
+      $\rightarrow$ Float
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_x}}: Escale $\rightarrow$ Float
+      \hfill \textcolor{\vert}{Observateur}
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_y}}: Escale $\rightarrow$ Float
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_name}}: Escale $\rightarrow$ String
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_best\_time}}: Escale
+      $\rightarrow$ Float
+
+      \textbf{Préconditions:}
+
+      \hspace{0.5cm} $\forall x \in Float, $\space$ \forall y \in Float, $\space$ 
+      \forall name \in String:$ 
+
+      \hspace{0.5cm} create\_escale(x, y, name) != NULL
+
+      \textbf{Axiomes:}
+
+      \hspace{0.5cm} $\forall e_1, e_2 \in$ Escale, $\forall x_1, x_2, y_1, y_2 \in$ Float 
+      $\forall name_1, name_2 \in$ String:
+
+      \hspace{0.5cm} $get\_x(create\_escale(x, y, name_1)) = x$ 
+
+      \hspace{0.5cm} $get\_y(create\_escale(x, y, name_1)) = y$
+
+      \hspace{0.5cm} $get\_name(create\_escale(x, y, name_1)) = name_1$
+
+      \hspace{0.5cm} $get\_best\_time(create\_escale(x, y, name_1)) = 0$
+
+      \hspace{0.5cm} $get\_best\_time(set\_best\_time(e_1, t)) = t$
+
+      \hspace{0.5cm} $calculate\_distance(create\_escale(x_1, y_1, name_1), 
+      create\_escale(x_2, y_2, name_2)) = x_2 - x_1 + y_2 - y_1$
+      
+      \end{minipage}
+   }
+\end{flushleft}
+
+\subsubsection{TAD: Course}
+
+\begin{flushleft}
+   \fbox{%
+      \begin{minipage}{\textwidth}
+      \textbf{Type:}
+
+      \hspace{0.5cm}Course
+
+      \textbf{Utilise:}
+
+      \hspace{0.5cm}Escale, Float, String, Boolean, Integer
+
+      \textbf{Opérations:}
+
+      \hspace{0.5cm} \textcolor{red}{\textbf{create\_course}}: Escale $\times$ Escale 
+      $\rightarrow$ Course
+      \hfill \textcolor{red}{Constructeur}
+
+      \hspace{0.5cm} \textcolor{blue}{\textbf{add\_escale}}: Course $\times$
+      Escale
+      $\rightarrow$ Course
+      \hfill \textcolor{blue}{Transformateur}
+
+      \hspace{0.5cm} \textcolor{blue}{\textbf{del\_escale}}: Course
+      $\rightarrow$ Course
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{is\_circuit}}: Course $\rightarrow$
+      Boolean
+      \hfill \textcolor{\vert}{Observateur}
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{escale\_nb}}: Course $\rightarrow$
+      Integer
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{etape\_nb}}: Course $\rightarrow$
+      Integer
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_best\_time\_course}}: Course
+      $\rightarrow$ Float
+
+      \hspace{0.5cm} \textcolor{\vert}{\textbf{get\_best\_time\_escale}}: Course 
+      $\times$ Escale $\rightarrow$ Float
+
+      \textbf{Préconditions:}
+
+      \hspace{0.5cm} $\forall e_1, e_2 \in$ Escale :
+      
+
+      \hspace{0.5cm} $create\_course(e_1, e_2)$\space$!= NULL$
+
+      \hspace{0.5cm} $\forall e \in$ Escale, $\forall c \in$ Course:
+
+      \hspace{0.5cm} $get\_best\_time\_escale(c, e)$\space$!= NULL$
+
+      \hspace{0.5cm} $add\_escale(c, e)$\space$!= NULL$
+
+      \hspace{0.5cm} $del\_escale(c)$\space$!= NULL$
+
+      \textbf{Axiomes:}
+
+      \hspace{0.5cm} $\forall e_1, e_2, e_3 \in$ Escale, $\forall c \in$ Course:
+
+      \hspace{0.5cm} $is\_circuit(create\_course(e_1, e_2)) = False$
+
+      \hspace{0.5cm} $get\_best\_time\_escale(create\_course(e_1, e_2)) = 0$
+
+      \hspace{0.5cm} $escale\_nb(create\_course(e1, e2)) = 2$
+
+      \hspace{0.5cm} $etape\_nb(create\_course(e1, e2)) = 1$
+
+      \hspace{0.5cm} $escale\_nb(add\_escale(c, e_1)) = escale\_nb + 1$
+
+      \hspace{0.5cm} $etape\_nb(add\_escale(c, e_1)) = etape\_nb + 1$
+
+      \hspace{0.5cm} $escale\_nb(del\_escale(c, e_3)) = escale\_nb - 1$
+
+      \hspace{0.5cm} $etape\_nb(del\_escale(c, e_3)) = etape\_nb - 1$
+
+      \hspace{0.5cm} $get\_best\_time\_escale(add\_escale(c, e_3), get\_nom(e_3))
+      = get\_best\_time\_(e_3)$ 
+
+      \end{minipage}%
+   }
+\end{flushleft}
 
 \section{Question(s)}
 %%%%%%%%%%%%%%%%%%%%%%%
