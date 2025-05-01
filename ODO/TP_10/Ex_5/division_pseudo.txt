@@ -1,0 +1,19 @@
+division(a,b){
+   int ret=0
+   for(; a>=b; a-=b){
+      ret ++
+   }
+   return ret
+}
+
+factoriser(x){
+   div=2
+   while(x!=1){
+      if(x%div!=0){
+         div ++
+      }else{
+         x/=div
+         printf(div)
+      }
+   }
+}

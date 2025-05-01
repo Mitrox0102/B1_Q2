@@ -1,0 +1,29 @@
+ret<-RAX
+
+division :  ret <- 0
+loop:       a-=b
+            inc ret
+            if(a>=b)
+               jmp loop
+            return ret
+
+
+==========Factoriser==========
+x -> R9
+xdiv -> EAX
+xmod -> EDI
+div -> R8
+
+factoriser: R9 <- x
+            div <- 2
+loop_inc:   div +=1
+loop:       if(x==1)
+               jmp loop_end
+            tmpx <- x
+            xdiv, xmod=division(x,div)
+            if(xmod!=0)
+               jmp loop_inc
+            x <-xdiv
+            print(div)
+            jmp loop
+loop_end:   return

@@ -1,0 +1,186 @@
+% Synthèse enrichie du Chapitre 1 : Le traitement de l'information
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Organisation des Ordinateurs - Chapitre 1}
+\lhead{Synthèse enrichie}
+\cfoot{\thepage}
+
+\title{\Huge\textbf{Chapitre 1 - Le traitement de l'information}}
+\author{Cours de Bernard Boigelot \newline Université de Liège}
+\date{2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+L’objectif de ce chapitre est de poser les bases fondamentales de l’étude des ordinateurs : qu’est-ce qu’un ordinateur, que signifie « traiter de l’information », comment cette information circule, comment elle est mesurée et quantifiée, et pourquoi les représentations binaires sont omniprésentes dans les systèmes modernes.
+
+\section{Qu’est-ce qu’un ordinateur ?}
+
+\textbf{Définition :} Un ordinateur est une machine capable de \textbf{traiter des données en suivant un programme préétabli}. Il s’agit d’un automate sans initiative propre, capable d’exécuter des instructions qui lui sont données sous forme de programme.
+
+\subsection{Exemples concrets d'applications}
+\begin{itemize}
+  \item \textbf{Ordinateur personnel :} bureautique, navigation web, jeu vidéo
+  \item \textbf{Smartphones :} capteurs GPS, appareil photo, apps, réseaux
+  \item \textbf{Voitures modernes :} dizaines de microprocesseurs (freinage, injection, multimédia...)
+  \item \textbf{Objets connectés :} balances, caméras, assistants vocaux
+\end{itemize}
+
+\subsection{Exemple type examen}
+\textit{Expliquez en quoi un smartphone est un ordinateur selon la définition vue au cours.}
+\newline\textbf{Réponse :} Il traite des données (position, image, son, texte) en exécutant un programme (applications) préétabli par le développeur.
+
+\section{Notion d'information}
+
+\subsection{Définition physique}
+L’information correspond à la \textbf{réduction de l’incertitude} qu’un observateur possède sur l’état d’un système. 
+
+\textbf{Exemple :} Un dé dans une boîte fermée peut montrer un chiffre entre 1 et 6. Ouvrir la boîte nous donne une information nouvelle.
+
+\subsection{Transmission par signaux}
+L'information est transmise par \textbf{signaux} physiques :
+\begin{itemize}
+  \item \textbf{Optiques :} lumière (ex : faisceau laser dans un lecteur DVD)
+  \item \textbf{Électriques :} tension sur un câble
+  \item \textbf{Mécaniques :} position d’un interrupteur
+\end{itemize}
+
+\textbf{Exemple :} Un lecteur DVD lit une séquence de creux/reliefs sur la surface du disque. Ces éléments modulent un faisceau laser réfléchi, transformé ensuite en signal électrique.
+
+\subsection{Chaîne complète de transmission enrichie}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+DVD & Faisceau laser & Photodiode & Signal électrique & Circuit électronique & Télévision \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Tableau récapitulatif des types de signaux}
+\begin{longtable}{|l|l|l|}
+\hline
+\textbf{Type de signal} & \textbf{Exemple} & \textbf{Caractéristique} \\
+\hline
+Optique & DVD, fibre optique & Vitesse, haute fréquence \\
+\hline
+Électrique & Câble, processeur & Mesurable, codable en binaire \\
+\hline
+Mécanique & Interrupteur, clavier & Actions utilisateur \\
+\hline
+\end{longtable}
+
+% Le reste du contenu suit sans changement
+\subsection{Signaux continus : définition et limites}
+\begin{itemize}
+  \item Valeurs dans un intervalle dense ($[0,12]$ V)
+  \item Sensibles au bruit, imprécisions (mesure, interférences)
+  \item Utilisés en analogique, mais peu fiables en calcul
+\end{itemize}
+
+\subsection{Signaux discrets : robustesse et usage}
+\begin{itemize}
+  \item Ensemble fini de valeurs (ex : $\{0,1\}$)
+  \item Résistent mieux au bruit
+  \item Base des circuits logiques modernes
+\end{itemize}
+
+\subsection{Représentation binaire}
+\begin{itemize}
+  \item 0V = logique 0
+  \item $V_{alimentation}$ = logique 1
+\end{itemize}
+
+\textbf{Schéma tension logique :}
+\begin{center}
+\begin{tikzpicture}
+  \draw[->] (0,0) -- (5,0) node[right] {temps};
+  \draw[->] (0,0) -- (0,2.5) node[above] {tension};
+  \draw[thick] (0,0) -- (1,0) -- (1,2) -- (2,2) -- (2,0) -- (3,0) -- (3,2) -- (4,2);
+  \node at (1.5,2.2) {\small 1};
+  \node at (0.5,-0.3) {\small 0};
+\end{tikzpicture}
+\end{center}
+
+\section{Quantification de l’information}
+
+\subsection{Formule de base (Shannon)}
+\[ I = \log_2 \left( \frac{1}{p} \right) \text{ bits} \]
+
+\subsection{Tableau comparatif (valeurs typiques)}
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Événement} & \textbf{Information (bits)} \\
+\hline
+Lancer de pièce & 1 \\
+\hline
+Lancer de dé (6 faces) & 2.58 \\
+\hline
+Lettre Z en français (0.12\%) & 9.7 \\
+\hline
+Lettre E (17\%) & 2.56 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Exemples supplémentaires type examens}
+\begin{enumerate}[label=\textbf{Exemple \arabic*.}, wide, labelwidth=!, labelindent=0pt]
+  \item Une mesure incertaine sur 8 niveaux \Rightarrow{} $\log_2(8) = 3$ bits
+  \item Signal binaire avec bruit (seuil mal réglé) \Rightarrow{} perte d’info
+  \item Texte aléatoire avec 26 lettres équiprobables \Rightarrow{} $\log_2(26) \approx 4.7$ bits
+  \item Lancer de 3 pièces \Rightarrow{} $2^3 = 8$ cas, donc 3 bits
+\end{enumerate}
+
+\subsection{Unités de stockage et confusion à éviter}
+\begin{itemize}
+  \item \textbf{Octet} = 8 bits
+  \item \textbf{Préfixes binaires} : K = $2^{10}$, M = $2^{20}$
+  \item \textbf{Piège} : Disque de 4 TB annoncé = 3.64 TB réels
+\end{itemize}
+
+\section{Flashcards clés pour mémorisation}
+\begin{multicols}{2}
+\begin{itemize}
+  \item \textbf{Bit} : unité d’information
+  \item \textbf{Binaire} : signal à 2 valeurs
+  \item \textbf{Shannon} : $I = \log_2(1/p)$
+  \item \textbf{Octet} : 8 bits
+  \item \textbf{Signal discret} : fiable
+  \item \textbf{Signal continu} : bruité
+\end{itemize}
+\end{multicols}
+
+\section{Astuces et conseils}
+\begin{itemize}
+  \item Vérifier toujours si les signaux sont fiables ou affectés par du bruit
+  \item Justifier les quantités d’information avec la formule de Shannon
+  \item Se méfier des notations commerciales : 1TB \neq{} $2^{40}$
+  \item En cas d'incertitude sur $p$, bien lire le contexte ou les fréquences données
+\end{itemize}
+
+\end{document}

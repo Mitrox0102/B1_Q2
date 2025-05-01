@@ -1,0 +1,695 @@
+% Synthèse complète et enrichie du Chapitre 3 : Instructions, Langage machine et Langage assembleur
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+
+\geometry{margin=2.5cm}
+\setlength{\headheight}{14.5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Organisation des Ordinateurs - Chapitre 3}
+\lhead{Synthèse enrichie}
+\cfoot{\thepage}
+
+\title{\Huge\textbf{Chapitre 3 - Instructions, Langage machine et Langage assembleur}}
+\author{Cours de Bernard Boigelot \newline Université de Liège}
+\date{2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+Ce chapitre aborde les notions fondamentales de programmation bas niveau, à travers les concepts d'instructions machines, de langage assembleur et de leur lien direct avec l'architecture matérielle. On y détaille le cycle de traitement d'une instruction, les différents types d'opérations (arithmétiques, logiques, de contrôle, de mémoire) et la manière dont elles sont représentées, codées, et exécutées dans une machine réelle.
+
+\subsection*{Objectifs du chapitre}
+\begin{itemize}
+  \item Comprendre le fonctionnement du cycle instruction exécution.
+  \item Étudier les différentes classes d’instructions (arithmétique, logique, mémoire, branchements).
+  \item Manipuler un jeu d'instructions élémentaire.
+  \item Savoir lire, écrire et traduire du langage assembleur vers le langage machine.
+  \item Visualiser l’impact direct des instructions sur les registres et la mémoire.
+  \item Préparer à la lecture et l’écriture d’un code assembleur simple.
+\end{itemize}
+
+\section{Cycle d'exécution d'une instruction}
+
+Chaque programme exécuté par un processeur est décomposé en une suite d’instructions élémentaires codées en binaire. Le cycle fondamental de traitement d’une instruction est appelé \textbf{cycle fetch-decode-execute}.
+
+\subsection{Étapes du cycle}
+\begin{enumerate}
+  \item \textbf{Fetch (chargement)} : lecture de l'instruction à l'adresse pointée par le compteur ordinal (PC).
+  \item \textbf{Decode (décodage)} : identification de l’opération à effectuer et des opérandes nécessaires.
+  \item \textbf{Execute (exécution)} : exécution de l’opération via l’ALU, modification éventuelle des registres ou de la mémoire.
+\end{enumerate}
+
+\subsection{Illustration du cycle}
+\begin{center}
+\begin{tikzpicture}[node distance=2.2cm, every node/.style={draw, rounded corners, minimum width=4.5cm, minimum height=1cm, text centered}, ->, thick]
+  \node (fetch) {Fetch : Lire l'instruction};
+  \node (decode) [below=of fetch] {Decode : Identifier et extraire};
+  \node (execute) [below=of decode] {Execute : Effectuer l’opération};
+  \node (next) [below=of execute] {MAJ PC : Passer à l'instruction suivante};
+
+  \path (fetch) edge (decode);
+  \path (decode) edge (execute);
+  \path (execute) edge (next);
+  \path (next) edge [bend right=70] (fetch);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Registres utilisés}
+\begin{itemize}
+  \item \textbf{PC (Program Counter)} : contient l’adresse de l’instruction à exécuter.
+  \item \textbf{IR (Instruction Register)} : contient l’instruction lue.
+  \item \textbf{ALU (Arithmetic Logic Unit)} : réalise les opérations arithmétiques/logiques.
+  \item \textbf{Registres généraux} : contiennent les opérandes ou les résultats.
+\end{itemize}
+
+\subsection{Exemple simple}
+\begin{itemize}
+  \item Instruction : \texttt{ADD R1, R2, R3} (somme R2 + R3 → R1)
+  \item Étapes :
+  \begin{enumerate}
+    \item Fetch : PC → mémoire
+    \item Decode : opcode ADD, R1, R2, R3
+    \item Execute : ALU effectue l’addition, résultat vers R1
+    \item Incrément du PC
+  \end{enumerate}
+\end{itemize}
+
+\section{Typologie des instructions}
+Les instructions en langage machine sont classées en catégories selon leur objectif principal. Chaque catégorie a une structure particulière au niveau des bits utilisés, et chaque instruction implique des registres, des opérandes et parfois une adresse mémoire.
+
+\subsection{Instructions arithmétiques et logiques}
+\begin{itemize}
+  \item Effectuent des calculs sur les registres
+  \item Exemples : \texttt{ADD, SUB, MUL, AND, OR, XOR, SLT (Set on Less Than)}
+  \item Format : souvent en \textbf{format R} (registre-registre)
+\end{itemize}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Instruction} & \textbf{Opération} & \textbf{Syntaxe} & \textbf{Effet} \\
+\hline
+ADD & Addition entière & ADD R1, R2, R3 & R1 = R2 + R3 \\
+SUB & Soustraction & SUB R4, R1, R6 & R4 = R1 - R6 \\
+AND & Et logique & AND R3, R3, R7 & R3 = R3 \& R7 \\
+SLT & Comparaison & SLT R1, R2, R3 & R1 = 1 si R2 < R3, sinon 0 \\
+\hline
+\end{tabular}
+
+\subsection{Instructions mémoire (load/store)}
+\begin{itemize}
+  \item Permettent l’accès à la mémoire principale
+  \item Exemples : \texttt{LW, SW} (load word, store word)
+  \item Format : \textbf{format I} (immédiat)
+  \item Syntaxe : \texttt{LW R1, 0(R2)} (charge depuis [R2+0] dans R1)
+\end{itemize}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Instruction} & \textbf{Action} & \textbf{Exemple} \\
+\hline
+LW & Load Word & LW R5, 4(R6) : R5 ← Mem[R6 + 4] \\
+SW & Store Word & SW R5, 0(R6) : Mem[R6] ← R5 \\
+\hline
+\end{tabular}
+
+\subsection{Instructions de contrôle (branchements)}
+\begin{itemize}
+  \item Permettent de changer le flux d’exécution
+  \item Exemples : \texttt{BEQ, BNE, J}
+  \item \textbf{BEQ} : branche si égalité \quad \texttt{BEQ R1, R2, offset}
+  \item \textbf{J} : saut inconditionnel \quad \texttt{J label}
+\end{itemize}
+
+\subsection{Formats d'instruction}
+\begin{itemize}
+  \item \textbf{Format R} : 6 bits opcode, 3 registres, 5 bits shamt, 6 bits funct
+  \item \textbf{Format I} : 6 bits opcode, 2 registres, 16 bits immédiat
+  \item \textbf{Format J} : 6 bits opcode, 26 bits adresse
+\end{itemize}
+
+%\includegraphics[width=0.85\textwidth]{instruction_formats.png}
+
+\subsection{Schéma intégré : Formats d'instruction R, I, J}
+\begin{center}
+\textbf{Format R (registre)}
+
+\begin{tikzpicture}[font=\footnotesize, node distance=0cm, every node/.style={minimum height=0.8cm, minimum width=1.2cm, draw, anchor=west}]
+\node (r0) at (0,0) {opcode};
+\node (r1) [right=of r0] {rs};
+\node (r2) [right=of r1] {rt};
+\node (r3) [right=of r2] {rd};
+\node (r4) [right=of r3] {shamt};
+\node (r5) [right=of r4] {funct};
+\end{tikzpicture}
+
+\vspace{1em}
+\textbf{Format I (immédiat/mémoire)}
+
+\begin{tikzpicture}[font=\footnotesize, node distance=0cm, every node/.style={minimum height=0.8cm, minimum width=1.2cm, draw, anchor=west}]
+\node (i0) at (0,0) {opcode};
+\node (i1) [right=of i0] {rs};
+\node (i2) [right=of i1] {rt};
+\node (i3) [right=of i2, minimum width=3.6cm] {immédiat};
+\end{tikzpicture}
+
+\vspace{1em}
+\textbf{Format J (saut)}
+
+\begin{tikzpicture}[font=\footnotesize, node distance=0cm, every node/.style={minimum height=0.8cm, minimum width=1.2cm, draw, anchor=west}]
+\node (j0) at (0,0) {opcode};
+\node (j1) [right=of j0, minimum width=6cm] {adresse};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Exercices types examen}
+\begin{itemize}
+  \item Q : Quelle est la signification de \texttt{ADD R1, R2, R3} ?
+  \item Q : Convertir \texttt{LW R4, 8(R5)} en format binaire I.
+  \item Q : Quelle différence entre \texttt{BEQ} et \texttt{J} ?
+\end{itemize}
+
+\newpage
+
+\section{Langage assembleur vs Langage machine}
+Le \textbf{langage machine} correspond à une séquence de bits directement interprétée par le processeur. C’est un langage binaire, difficilement lisible pour un humain.
+
+Le \textbf{langage assembleur} est une notation symbolique proche du langage machine, mais compréhensible pour les programmeurs. Chaque instruction assembleur correspond en général à une ou plusieurs instructions machine (sauf dans le cas des pseudo-instructions).
+
+\subsection{Traduction directe (1:1)}
+\begin{itemize}
+    \item Exemple :
+    \begin{itemize}
+        \item Assembleur : \texttt{ADD R1, R2, R3}
+        \item Machine (format R) : \texttt{000000 00010 00011 00001 00000 100000}
+    \end{itemize}
+    \item Le code binaire est structuré selon le format R :
+    \begin{itemize}
+        \item opcode : 000000
+        \item rs : 00010 (R2)
+        \item rt : 00011 (R3)
+        \item rd : 00001 (R1)
+        \item shamt : 00000
+        \item funct : 100000 (ADD)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Traduction indirecte : pseudo-instructions}
+Certaines instructions d’assembleur ne correspondent pas directement à une instruction machine unique. Ce sont des \textbf{pseudo-instructions}, traduites par l’assembleur en une séquence d’instructions de base.
+
+\begin{itemize}
+    \item Exemple : \texttt{LI R1, 5} (load immediate)
+    \begin{itemize}
+        \item Ce pseudo-code peut être traduit en :
+        \begin{verbatim}
+        LUI R1, 0        ; Charge le haut de l'immédiat à 0
+        ORI R1, R1, 5    ; Ajoute le bas de l'immédiat
+        \end{verbatim}
+    \end{itemize}
+    \item Autres exemples de pseudo-instructions :
+    \begin{itemize}
+        \item \texttt{MOVE R1, R2} → \texttt{ADD R1, R2, R0}
+        \item \texttt{NOP} → \texttt{SLL R0, R0, 0}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Encodage binaire complet}
+\begin{itemize}
+    \item Convertir une instruction assembleur en code binaire consiste à :
+    \begin{enumerate}
+        \item Identifier le format (R, I, J)
+        \item Utiliser la table d’opcode et fonctions
+        \item Encoder les registres, décalages ou adresses
+    \end{enumerate}
+    \item Exemple : \texttt{LW R4, 8(R5)}
+    \begin{itemize}
+        \item opcode : 100011
+        \item rs = R5 → 00101
+        \item rt = R4 → 00100
+        \item offset = 8 → 0000 0000 0000 1000
+    \end{itemize}
+    \item Binaire : \texttt{100011 00101 00100 0000000000001000}
+\end{itemize}
+
+\newpage
+
+\section{Codage des constantes et adresses}
+\subsection{Codage immédiat dans le format I}
+Le champ \textbf{immédiat} est une valeur codée sur 16 bits, souvent signée (représentation en complément à deux). Utilisé dans les instructions \texttt{LW}, \texttt{SW}, \texttt{ADDI}, etc.
+
+\textbf{Exemple :}
+\begin{itemize}
+  \item \texttt{ADDI R1, R2, -4}
+  \item Immédiat = -4 → \texttt{1111 1111 1111 1100} (en binaire signé sur 16 bits)
+\end{itemize}
+
+\subsection{Décalage pour l'adressage relatif (branchements)}
+\begin{itemize}
+  \item Instructions \texttt{BEQ}, \texttt{BNE} utilisent un offset relatif à l’adresse \texttt{PC+4}.
+  \item L’offset est exprimé en nombre d’instructions (non en octets).
+\end{itemize}
+
+\textbf{Exemple :}
+\[
+\text{Adresse source} = \texttt{0x1000}, \quad
+\text{Adresse cible} = \texttt{0x100C}
+\Rightarrow \text{Offset} = \frac{0x100C - 0x1000}{4} = 3 = \texttt{0000 0000 0000 0011}
+\]
+
+
+\subsection{Codage des adresses dans le format J}
+\begin{itemize}
+  \item L’adresse est codée sur 26 bits.
+  \item Le processeur reconstitue une adresse 32 bits en : \texttt{PC[31..28] || adresse || 00}
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{itemize}
+  \item \texttt{J 0x00400000} → les 26 bits significatifs de l’adresse sont extraits : \texttt{000100 000000 000000 000000}
+\end{itemize}
+
+\subsection{Résumé pratique : tableau de codage}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Type} & \textbf{Taille} & \textbf{Utilisation} & \textbf{Représentation} \\
+\hline
+Immédiat & 16 bits & Format I & Complément à deux \\
+Offset de branchement & 16 bits & Format I & Relatif à PC+4 \\
+Adresse de saut & 26 bits & Format J & Concaténé avec PC[31:28] \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+\section{Cycle d'exécution des instructions}
+
+\subsection{Étapes du cycle}
+Le cycle d'exécution d'une instruction dans un processeur se décompose en plusieurs étapes clés, généralement appelées le « cycle de traitement ». Ces étapes sont essentielles pour comprendre le fonctionnement d'un processeur et son interaction avec la mémoire.
+
+\begin{enumerate}
+  \item \textbf{Fetch (Lecture de l'instruction)} : le processeur lit l'instruction située à l'adresse pointée par le compteur ordinal (PC - Program Counter).
+  \item \textbf{Decode (Décodage)} : l'instruction est analysée pour déterminer l'opération à effectuer et les opérandes à utiliser.
+  \item \textbf{Execute (Exécution)} : l'opération est réalisée par l'ALU (Unité arithmétique et logique), comme une addition ou un test de condition.
+  \item \textbf{Memory access (Accès mémoire)} : si l'instruction implique une lecture ou une écriture en mémoire, cette opération est effectuée.
+  \item \textbf{Write-back (Écriture du résultat)} : le résultat de l'instruction est stocké dans un registre (ou la mémoire).
+  \item \textbf{Update PC (Mise à jour du PC)} : le compteur ordinal est mis à jour pour pointer vers l'instruction suivante.
+\end{enumerate}
+
+\subsection{Illustration du cycle d'instruction}
+\begin{center}
+\begin{tikzpicture}[node distance=1.3cm, every node/.style={draw, align=center, rounded corners=3pt, fill=gray!10}]
+  \node (fetch) {Lecture (Fetch)\\Instruction depuis la mémoire};
+  \node (decode) [below=of fetch] {Décodage (Decode)\\Identifier l'opération};
+  \node (execute) [below=of decode] {Exécution (Execute)\\ALU ou contrôle};
+  \node (mem) [below=of execute] {Mémoire (Memory access)\\Lecture/Écriture};
+  \node (wb) [below=of mem] {Écriture (Write-back)\\Résultat vers registre};
+  \node (pc) [below=of wb] {Mise à jour du PC};
+
+  \draw[->] (fetch) -- (decode);
+  \draw[->] (decode) -- (execute);
+  \draw[->] (execute) -- (mem);
+  \draw[->] (mem) -- (wb);
+  \draw[->] (wb) -- (pc);
+  \draw[->] (pc.south) to[out=-90,in=270] ++(2,-0.5) node[draw=none,fill=none,right=1cm]{} |- (fetch);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Exemples d'exécution}
+
+\paragraph{Exemple 1 :} Instruction \texttt{add \$t0, \$t1, \$t2}
+\begin{itemize}
+  \item Fetch : Récupérer \texttt{add \$t0, \$t1, \$t2} depuis la mémoire
+  \item Decode : Type R, opérateurs \$t1 et \$t2, destination \$t0
+  \item Execute : Addition \$t1 + \$t2
+  \item Memory : Pas d'accès mémoire
+  \item Write-back : Stocker le résultat dans \$t0
+  \item Mise à jour du PC : PC = PC + 4
+\end{itemize}
+
+\paragraph{Exemple 2 :} Instruction \texttt{lw \$t0, 4(\$sp)}
+\begin{itemize}
+  \item Fetch : Lire l'instruction \texttt{lw}
+  \item Decode : Type I, base \$sp, offset 4
+  \item Execute : Calculer \$sp + 4
+  \item Memory : Lire à l'adresse obtenue
+  \item Write-back : Stocker la valeur en \$t0
+  \item Mise à jour du PC : PC = PC + 4
+\end{itemize}
+
+\paragraph{Exemple 3 :} Instruction \texttt{beq \$t0, \$t1, offset}
+\begin{itemize}
+  \item Fetch : Lire \texttt{beq}
+  \item Decode : Type I, comparer \$t0 et \$t1
+  \item Execute : Comparaison
+  \item Memory : Pas d'accès
+  \item Write-back : Rien à écrire
+  \item Mise à jour du PC : saut si égalité $\Rightarrow$ PC = PC + 4 + offset
+\end{itemize}
+
+\subsection{Remarques importantes}
+\begin{itemize}
+  \item Certaines instructions peuvent sauter des étapes (ex: \texttt{j} ne fait pas de write-back).
+  \item Le cycle peut être étendu dans un pipeline (chapitre 4).
+\end{itemize}
+
+\newpage
+
+\section{Instructions arithmétiques et logiques}
+
+\subsection{Instructions arithmétiques de base}
+Les instructions arithmétiques permettent de réaliser des opérations comme l'addition, la soustraction, etc. Elles sont de type R lorsque les trois opérandes sont des registres.
+
+\begin{itemize}
+  \item \texttt{ADD \$d, \$s, \$t} : Additionne \$s et \$t, stocke le résultat dans \$d.
+  \item \texttt{SUB \$d, \$s, \$t} : Soustrait \$t de \$s, stocke le résultat dans \$d.
+  \item \texttt{ADDU}, \texttt{SUBU} : Versions non signées.
+  \item \texttt{ADDI \$t, \$s, imm} : Addition avec immédiat (imm sur 16 bits).
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{ADD \$t0, \$t1, \$t2} → \$t0 = \$t1 + \$t2
+  \item \texttt{ADDI \$t0, \$t1, -5} → \$t0 = \$t1 - 5
+  \item \texttt{SUBU \$s0, \$s1, \$s2} → \$s0 = \$s1 - \$s2 (sans détection d’overflow)
+\end{itemize}
+
+\subsection{Instructions logiques}
+Elles permettent de manipuler les bits dans les registres.
+
+\begin{itemize}
+  \item \texttt{AND \$d, \$s, \$t} : ET logique
+  \item \texttt{OR \$d, \$s, \$t} : OU logique
+  \item \texttt{XOR \$d, \$s, \$t} : OU exclusif
+  \item \texttt{NOR \$d, \$s, \$t} : NON OU
+  \item \texttt{ANDI, ORI, XORI} : versions avec immédiat
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{AND \$t0, \$t1, \$t2} : \$t0 = \$t1 \& \$t2
+  \item \texttt{ORI \$t0, \$t1, 0x0F} : \$t0 = \$t1 | 0x0000000F
+\end{itemize}
+
+\subsection{Instructions de décalage}
+Elles décalent les bits d’un registre vers la gauche ou la droite.
+
+\begin{itemize}
+  \item \texttt{SLL \$d, \$t, shamt} : décalage à gauche logique
+  \item \texttt{SRL \$d, \$t, shamt} : décalage à droite logique
+  \item \texttt{SRA \$d, \$t, shamt} : décalage à droite arithmétique
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{SLL \$t0, \$t1, 2} : \$t0 = \$t1 << 2 (multiplie par 4)
+  \item \texttt{SRL \$t0, \$t1, 1} : \$t0 = \$t1 / 2 (si unsigned)
+\end{itemize}
+
+\subsection{Instructions de comparaison}
+
+\begin{itemize}
+  \item \texttt{SLT \$d, \$s, \$t} : \$d = 1 si \$s < \$t, sinon \$d = 0
+  \item \texttt{SLTI \$t, \$s, imm} : \$t = 1 si \$s < imm
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{SLT \$t0, \$t1, \$t2} : \$t0 = 1 si \$t1 < \$t2, sinon 0
+  \item \texttt{SLTI \$t0, \$t1, 5} : \$t0 = 1 si \$t1 < 5
+\end{itemize}
+
+\subsection{Schéma : type R en détail}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Champ} & \textbf{Bits} & \textbf{Signification} \\
+\hline
+Opcode & 6 & 000000 (fixe pour R) \\
+Rs & 5 & Registre source \$s \\
+Rt & 5 & Registre source \$t \\
+Rd & 5 & Registre destination \$d \\
+Shamt & 5 & Décalage (souvent 0 sauf SLL/SRL) \\
+Funct & 6 & Spécifie l’opération (ex: 100000 pour ADD) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Conseils d’apprentissage}
+\begin{itemize}
+  \item Apprenez les fonctions \texttt{funct} pour les instructions R (ex: ADD = 100000, SUB = 100010).
+  \item Pratiquez avec des conversions binaires et hexadécimales.
+  \item Testez en simulateur MIPS comme QtSPIM.
+  \item Les instructions avec immédiat sont très fréquentes en réalité (optimisation du code).
+\end{itemize}
+
+\newpage
+
+\section{Instructions de saut et de branchement}
+
+\subsection{Types de sauts et branchements}
+Ces instructions modifient le compteur ordinal (PC) pour modifier le flot d'exécution du programme. Elles permettent d’implémenter les boucles, les conditions, etc.
+
+\begin{itemize}
+  \item \textbf{Sauts inconditionnels (type J)} : saut direct à une adresse.
+  \item \textbf{Branchements conditionnels (type I)} : saut si une condition est vraie.
+  \item \textbf{Appels de procédure} : saut avec sauvegarde du retour.
+  \item \textbf{Retour de procédure} : revenir à l’instruction suivante après un appel.
+\end{itemize}
+
+\subsection{Instructions de saut (type J)}
+\begin{itemize}
+  \item \texttt{J label} : saut inconditionnel vers l’étiquette spécifiée.
+  \item \texttt{JAL label} : saut vers le label et sauvegarde de l’adresse de retour dans \$ra.
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{J loop} : saute à l’étiquette \texttt{loop}
+  \item \texttt{JAL function} : saute à \texttt{function}, \$ra = PC + 4
+\end{itemize}
+
+\subsection{Instructions de branchement (type I)}
+\begin{itemize}
+  \item \texttt{BEQ \$s, \$t, offset} : saut si \$s == \$t
+  \item \texttt{BNE \$s, \$t, offset} : saut si \$s $\neq$ \$t
+\end{itemize}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item \texttt{BEQ \$t0, \$t1, label} : saute à \texttt{label} si \$t0 == \$t1
+  \item \texttt{BNE \$s1, \$s2, next} : saute à \texttt{next} si \$s1 $\neq$ \$s2
+\end{itemize}
+
+\subsection{Instructions de saut indirect}
+\begin{itemize}
+  \item \texttt{JR \$ra} : saut à l’adresse contenue dans \$ra (retour de fonction)
+  \item \texttt{JALR \$d, \$s} : saute à \$s, stocke retour dans \$d
+\end{itemize}
+
+\subsection{Schéma : format des instructions J}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Champ} & \textbf{Bits} & \textbf{Signification} \\
+\hline
+Opcode & 6 & Ex: 000010 pour J, 000011 pour JAL \\
+Address & 26 & Adresse cible (concaténée avec bits PC) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Calcul de l’offset pour les branchements}
+L’offset utilisé dans les instructions BEQ et BNE est relatif :
+\begin{itemize}
+  \item On prend la différence entre l’adresse cible et l’adresse suivante (PC + 4)
+  \item On divise par 4 (taille d’une instruction)
+\end{itemize}
+
+\paragraph{Exemple :}
+\begin{itemize}
+  \item PC courant = 0x1000, label = 0x100C
+  \item Offset = (0x100C - 0x1004) / 4 = 2 → codé sur 16 bits
+\end{itemize}
+
+\subsection{Conseils et erreurs fréquentes}
+\begin{itemize}
+  \item Toujours utiliser un label défini sinon erreur à l’assemblage.
+  \item Les sauts de type J ne contiennent pas l’adresse complète (seulement 26 bits).
+  \item Attention à l’alignement : les adresses doivent être multiples de 4.
+  \item Le registre \$ra contient l’adresse de retour après un JAL.
+\end{itemize}
+
+\newpage
+
+\section{Appels système et gestion d’entrée/sortie}
+
+\subsection{Les appels système (syscall)}
+L'appel système permet d'interagir avec l'environnement externe (affichage, saisie, fichiers, etc.) en utilisant le simulateur MIPS (QtSPIM ou Mars).
+
+\paragraph{Fonctionnement général :}
+\begin{itemize}
+  \item Mettre le numéro de l'appel système dans \$v0.
+  \item Fournir les arguments nécessaires dans \$a0, \$a1, etc.
+  \item Utiliser l’instruction \texttt{syscall}.
+  \item Le résultat (si applicable) est renvoyé dans \$v0.
+\end{itemize}
+
+\subsection{Principaux appels système}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Code} & \textbf{Description} & \textbf{Arguments} \\
+\hline
+1 & Afficher un entier & \$a0 = entier \\
+4 & Afficher une chaîne & \$a0 = adresse chaîne \\
+5 & Lire un entier & (résultat dans \$v0) \\
+8 & Lire une chaîne & \$a0 = adresse, \$a1 = taille max \\
+10 & Quitter le programme & aucun \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Exemples :}
+\begin{itemize}
+  \item Affichage :
+  \begin{verbatim}
+  li $v0, 1
+  li $a0, 42
+  syscall
+  \end{verbatim}
+  \item Lecture :
+  \begin{verbatim}
+  li $v0, 5
+  syscall
+  move $t0, $v0  # stocke le résultat dans $t0
+  \end{verbatim}
+\end{itemize}
+
+\subsection{Utilisation de chaînes}
+\begin{itemize}
+  \item Les chaînes sont définies dans la section \texttt{.data} avec l’instruction \texttt{.asciiz}.
+  \item Exemple : \texttt{msg: .asciiz "Hello world!"}
+  \item Pour afficher une chaîne, mettre son adresse dans \$a0.
+\end{itemize}
+
+\subsection{Conseils pratiques}
+\begin{itemize}
+  \item Bien distinguer les appels système par leur numéro.
+  \item Toujours initialiser les registres utilisés avant chaque syscall.
+  \item Utilisez \texttt{.data} pour les chaînes, \texttt{.text} pour le code.
+  \item Préférez des labels explicites (\texttt{msg}, \texttt{buffer}, etc.).
+\end{itemize}
+
+\subsection{Résumé visuel : appels système courants}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Opération} & \textbf{\$v0} & \textbf{Registres utilisés} \\
+\hline
+Afficher un entier & 1 & \$a0 = valeur à afficher \\
+Afficher une chaîne & 4 & \$a0 = adresse de la chaîne \\
+Lire un entier & 5 & résultat dans \$v0 \\
+Lire une chaîne & 8 & \$a0 = adresse, \$a1 = taille max \\
+Quitter & 10 & aucun \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+\section{Instructions pseudo et synthèse du chapitre}
+
+\subsection{Instructions pseudo (pseudo-instructions)}
+Les pseudo-instructions sont des instructions simplifiées offertes par l’assembleur pour faciliter l’écriture du code, bien qu'elles ne soient pas directement exécutables par le processeur. Elles sont converties en une ou plusieurs instructions réelles.
+
+\paragraph{Exemples courants :}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Pseudo-instruction} & \textbf{Instructions réelles générées} \\
+\hline
+\texttt{LI \$t0, 5} & \texttt{ORI \$t0, \$zero, 5} \\
+\texttt{MOVE \$t1, \$t2} & \texttt{ADD \$t1, \$t2, \$zero} \\
+\texttt{BGT \$s1, \$s2, label} & \texttt{SLT \$at, \$s2, \$s1; BNE \$at, \$zero, label} \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Pourquoi les utiliser ?}
+\begin{itemize}
+  \item Simplifie la lecture et l'écriture du code.
+  \item Rend le code plus intuitif.
+  \item Évite les erreurs manuelles de gestion de registres.
+\end{itemize}
+
+\paragraph{Astuce :} On peut utiliser le compilateur MIPS pour voir comment une pseudo-instruction est traduite en instructions natives.
+
+\subsection{Résumé du chapitre}
+\begin{itemize}
+  \item MIPS est une architecture à jeu d'instructions réduit (RISC).
+  \item Trois types d'instructions : R, I, J.
+  \item Utilisation des registres \$t, \$s, \$a, \$v, etc.
+  \item Appels système via \texttt{syscall} et code \$v0.
+  \item Instructions de branchement/saut pour les conditions/boucles.
+  \item Instructions arithmétiques/bit à bit selon les formats R et I.
+  \item Pseudo-instructions pour simplifier la programmation.
+\end{itemize}
+
+\subsection{Conseils pour réussir les examens}
+\begin{itemize}
+  \item Savoir identifier le type d'instruction (R, I, J).
+  \item Comprendre comment calculer les offsets.
+  \item Connaître les registres standards \$a0-\$a3, \$v0-\$v1, \$t0-\$t9, \$s0-\$s7, \$ra, \$sp.
+  \item Utiliser les schémas pour vérifier les champs d'instruction.
+  \item Apprendre à utiliser les syscalls les plus fréquents (1, 4, 5, 8, 10).
+  \item S’exercer avec QtSPIM ou Mars sur des petits programmes (affichage, boucles, conditions).
+\end{itemize}
+
+\subsection{Exercice type examen}
+\begin{quote}
+Écrivez un programme MIPS qui lit un entier, le double si c’est un nombre pair, sinon affiche le triple. Utilisez des syscalls et affichez le résultat.
+\end{quote}
+
+\paragraph{Solution :}
+\begin{verbatim}
+li $v0, 5       # lecture
+syscall
+move $t0, $v0
+andi $t1, $t0, 1
+beq $t1, $zero, pair
+# impair
+mul $t2, $t0, 3
+j fin
+pair:
+mul $t2, $t0, 2
+fin:
+li $v0, 1
+move $a0, $t2
+syscall
+\end{verbatim}
+
+\newpage
+
+\end{document}

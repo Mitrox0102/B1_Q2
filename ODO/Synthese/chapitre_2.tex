@@ -1,0 +1,406 @@
+% Synthèse complète et enrichie du Chapitre 2 : La représentation des données
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Organisation des Ordinateurs - Chapitre 2}
+\lhead{Synthèse enrichie}
+\cfoot{\thepage}
+
+\title{\Huge\textbf{Chapitre 2 - La représentation des données}}
+\author{Cours de Bernard Boigelot \newline Université de Liège}
+\date{2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+Ce chapitre s'intéresse à la manière dont l'information est codée, manipulée et représentée dans un ordinateur. Il couvre les représentations binaires, les bases numériques, les entiers (signés et non signés), les nombres réels (virgule fixe et flottante), ainsi que le codage des caractères.
+
+\subsection*{Objectifs}
+\begin{itemize}
+    \item Comprendre les systèmes de numération : base 2, 10, 16.
+    \item Maîtriser les conversions entre les représentations.
+    \item Représenter et manipuler des entiers non signés et signés.
+    \item Représenter des réels en virgule fixe et flottante (norme IEEE 754).
+    \item Comprendre le codage des caractères (ASCII, ISO, Unicode).
+\end{itemize}
+
+\newpage
+
+\section{Représentation des entiers non signés}
+
+\subsection{Définition et principe}
+Un entier non signé est un nombre entier \textbf{positif ou nul}. Il est représenté en binaire à l’aide d’un certain nombre de bits. Chaque bit a un poids correspondant à une puissance de 2, en fonction de sa position (bit de poids faible à droite, bit de poids fort à gauche).
+
+\paragraph{Formule générale :}
+\[ V = \sum_{i=0}^{n-1} b_i \cdot 2^i \]
+
+Où $b_i$ représente le bit à la position $i$, et $n$ est le nombre total de bits.
+
+\subsection{Exemple 1 :}
+Représentation de $13$ sur 4 bits :
+\[ 13 = 8 + 4 + 0 + 1 = 2^3 + 2^2 + 2^0 \Rightarrow (1101)_2 \]
+
+\subsection{Exemple 2 :}
+\textbf{Convertir 255 en binaire sur 8 bits.}
+\[ 255 = 2^7 + 2^6 + ... + 2^0 \Rightarrow (11111111)_2 \]
+
+\subsection{Exemple 3 : tableau binaire / décimal / hexadécimal}
+\begin{tabular}{|c|c|c|}
+\hline
+Décimal & Binaire & Hexadécimal \\
+\hline
+5 & 00000101 & 05 \\
+15 & 00001111 & 0F \\
+63 & 00111111 & 3F \\
+127 & 01111111 & 7F \\
+\hline
+\end{tabular}
+
+\subsection{Limites selon le nombre de bits}
+\begin{itemize}
+  \item Sur 4 bits : $[0, 15]$
+  \item Sur 8 bits : $[0, 255]$
+  \item Sur 16 bits : $[0, 65535]$
+  \item Sur 32 bits : $[0, 4294967295]$
+\end{itemize}
+
+\subsection{Exercices types examens}
+\begin{itemize}
+  \item \textbf{Q1 :} Convertir $42$ en binaire et en hexadécimal.
+  \item \textbf{Q2 :} Donner la valeur décimale de $(10101101)_2$.
+  \item \textbf{Q3 :} Quel est l'entier maximum représentable sur 12 bits ?
+\end{itemize}
+
+\subsection{Astuce : Conversion rapide binaire \textrightarrow{} hexadécimal}
+Découper la suite binaire en groupes de 4 bits depuis la droite, et convertir chaque groupe avec la table :
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Bin & Hex & Bin & Hex & Bin & Hex \\
+\hline
+0000 & 0 & 0100 & 4 & 1000 & 8 \\
+0001 & 1 & 0101 & 5 & 1001 & 9 \\
+0010 & 2 & 0110 & 6 & 1010 & A \\
+0011 & 3 & 0111 & 7 & 1011 & B \\
+     &   &      &   & 1100 & C \\
+     &   &      &   & 1101 & D \\
+     &   &      &   & 1110 & E \\
+     &   &      &   & 1111 & F \\
+\hline
+\end{tabular}
+
+\newpage
+\section{Représentation des entiers signés}
+
+\subsection{Pourquoi une représentation spécifique ?}
+Les entiers signés permettent de représenter des valeurs positives et négatives. Cela nécessite une convention pour différencier un nombre comme $+5$ de $-5$.
+
+\subsection{Méthodes de codage}
+\begin{enumerate}
+  \item \textbf{Bit de signe (sign-magnitude)} : 1 bit pour le signe, les autres pour la valeur absolue.
+  \item \textbf{Complément à un} : inverser les bits du positif.
+  \item \textbf{Complément à deux (C2)} : méthode standard.
+\end{enumerate}
+
+\subsection{Complément à deux}
+Pour obtenir le complément à deux d’un nombre :
+\begin{itemize}
+  \item Prendre sa valeur absolue en binaire
+  \item Inverser tous les bits
+  \item Ajouter 1
+\end{itemize}
+
+\textbf{Exemple :}
+\[ +5 = 00000101 \Rightarrow -5 : 11111010 + 1 = 11111011 \]
+
+\subsection{Intervalles représentables}
+\begin{tabular}{|c|c|c|}
+\hline
+Bits & Non signé & Signé (C2) \\
+\hline
+4 & 0 à 15 & -8 à +7 \\
+8 & 0 à 255 & -128 à +127 \\
+16 & 0 à 65535 & -32768 à +32767 \\
+\hline
+\end{tabular}
+
+\subsection{Exemple d'interprétation}
+\textbf{Interpréter 11111100 sur 8 bits en signé (C2) :}
+\begin{itemize}
+  \item Valeur décimale : $2^8 - 4 = 252$ (en non signé)
+  \item En signé : $256 - 252 = 4 \Rightarrow -4$
+\end{itemize}
+
+\subsection{Exercices type examen}
+\begin{itemize}
+  \item \textbf{Q1 :} Donner le C2 de $-14$ sur 8 bits.
+  \item \textbf{Q2 :} Quelle est la représentation de $-1$ sur 8 bits ? (Réponse : 11111111)
+  \item \textbf{Q3 :} Quelle valeur signe-t-on si on lit 10000000 ? (Réponse : $-128$ sur 8 bits)
+\end{itemize}
+
+\subsection{Astuces / erreurs fréquentes}
+\begin{itemize}
+  \item $-1$ = tous les bits à 1 !
+  \item $+0$ = $-0$ en C2 (unique représentation du zéro)
+  \item Valeur min en C2 = pas de positif opposé exact
+\end{itemize}
+
+\newpage
+
+\section{Représentation des nombres réels}
+
+\subsection{Pourquoi une représentation spéciale ?}
+Contrairement aux entiers, les nombres réels ne peuvent pas être représentés de manière exacte dans tous les cas en binaire (ex : 0.1 est infini en binaire). Deux approches principales existent : la \textbf{virgule fixe} et la \textbf{virgule flottante}.
+
+\subsection{Virgule fixe}
+\begin{itemize}
+    \item Les bits sont divisés entre partie entière et partie fractionnaire (ex: 4 bits + 4 bits).
+    \item Simple à implémenter, utilisé dans les microcontrôleurs.
+    \item Exemple : $00011010 = 1.625$ si $4.4$ bits avec poids $2^3$ à $2^{-4}$.
+\end{itemize}
+
+\subsection{Virgule flottante (IEEE 754)}
+Représentation standardisée pour les calculs scientifiques. Un nombre est représenté par :
+\[ x = (-1)^s \cdot 1.m \cdot 2^{e - \,\text{biais}} \]
+
+\subsection{Simple précision (32 bits)}
+\begin{itemize}
+    \item 1 bit de signe
+    \item 8 bits pour l'exposant (biais = 127)
+    \item 23 bits pour la mantisse (fractionnaire)
+\end{itemize}
+
+\subsection{Exemple : représenter $-6.25$}
+\begin{itemize}
+    \item Binaire : $-110.01 = -1.1001 \cdot 2^2$
+    \item Signe = 1
+    \item Exposant = $2 + 127 = 129 \Rightarrow 10000001$
+    \item Mantisse : 10010000000000000000000
+\end{itemize}
+
+\textbf{IEEE final :} \texttt{1 10000001 10010000000000000000000}
+
+\subsection{Catégories spéciales (IEEE 754)}
+\begin{itemize}
+  \item Zéro (exposant et mantisse = 0)
+  \item Infini (+∞, -∞)
+  \item NaN (Not a Number)
+  \item Dénormalisés (exposant nul, mantisse ≠ 0)
+\end{itemize}
+
+\subsection{Erreurs d'arrondi fréquentes}
+\begin{itemize}
+  \item 0.1 ≠ $0001100110011...$ (infini binaire)
+  \item Des tests comme \texttt{if(x == 0.1)} peuvent échouer
+  \item Utiliser un epsilon de tolérance dans les comparaisons
+\end{itemize}
+
+\subsection{Exercices type examen}
+\begin{itemize}
+  \item Q1 : Écrire 5.75 en IEEE simple précision.
+  \item Q2 : Pourquoi 0.2 ne peut pas être codé exactement ?
+  \item Q3 : Que signifie un exposant de 255 en IEEE ? (Rép : Infini ou NaN)
+\end{itemize}
+
+\newpage
+
+\section{Codage des textes (ASCII, ISO, Unicode)}
+
+\subsection{ASCII (American Standard Code for Information Interchange)}
+\begin{itemize}
+  \item Codage sur 7 bits (128 caractères)
+  \item Inclut : lettres, chiffres, symboles, codes de contrôle (\texttt{\textbackslash n}, \texttt{\textbackslash r})
+  \item Exemple : A = 65, B = 66, a = 97
+\end{itemize}
+
+\subsection{ISO 8859-1 (Latin-1)}
+\begin{itemize}
+  \item Extension ASCII en 8 bits (256 caractères)
+  \item Ajoute caractères accentués : é, è, à, ç, etc.
+  \item Très utilisé en Europe occidentale
+\end{itemize}
+
+\subsection{Unicode}
+\begin{itemize}
+  \item Codage universel pour toutes les langues
+  \item UTF-8 : taille variable (1 à 4 octets), compatible ASCII
+  \item UTF-16 : 2 ou 4 octets
+  \item Exemple : \texttt{é} = C3 A9 (UTF-8), \texttt{€} = E2 82 AC
+\end{itemize}
+
+\subsection{Exemples de codage}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Caractère & ASCII (déc) & UTF-8 (hex) & Description \\
+\hline
+A & 65 & 41 & Lettre majuscule A \\
+\texttt{é} & - & C3 A9 & Accentué latin \\
+\texttt{€} & - & E2 82 AC & Euro (symbole monétaire) \\
+\texttt{中} & - & E4 B8 AD & Caractère chinois \\
+\hline
+\end{tabular}
+
+\subsection{Compatibilité entre formats}
+\begin{itemize}
+  \item UTF-8 conserve la compatibilité avec ASCII pour les 128 premiers codes
+  \item Attention aux erreurs d'encodage : ouvrir un fichier UTF-8 avec ISO cause des caractères illisibles
+\end{itemize}
+
+\subsection{Exercices types examens}
+\begin{itemize}
+  \item Q1 : Donner la valeur ASCII de la lettre Z.
+  \item Q2 : Combien d’octets sont utilisés pour le caractère \texttt{€} en UTF-8 ?
+  \item Q3 : Quelle différence entre ASCII et UTF-8 ?
+\end{itemize}
+
+\subsection{Astuce}
+\textbf{ASCII ⊂ UTF-8} ⟹ Tout fichier ASCII est valide en UTF-8 !
+
+\newpage
+
+\section{Exemples types examens, flashcards et astuces}
+
+\subsection{Exemples type examen corrigés}
+\textbf{Exemple 1 — Conversion base :} Convertir $2023$ en binaire et hexadécimal.
+\[ 2023 = 11111100111_2 = 7E7_{16} \]
+
+\textbf{Exemple 2 — Complément à deux :} Donner C2 de $-45$ sur 8 bits.
+\[ 45 = 00101101 \Rightarrow \text{inverse : } 11010010 + 1 = 11010011 \]
+
+\textbf{Exemple 3 — IEEE 754 :} Codage de $+3.5$ en simple précision.
+\begin{itemize}
+  \item $3.5 = 1.11 \cdot 2^1$
+  \item Exposant : $127 + 1 = 128 = 10000000$
+  \item Mantisse : 11000000000000000000000
+\end{itemize}
+\texttt{0 10000000 11000000000000000000000}
+
+\subsection{Schéma : format IEEE 754 (32 bits)}
+\begin{center}
+\begin{tikzpicture}
+\draw[thick] (0,0) rectangle (12,1);
+\draw[thick] (1,0) -- (1,1);
+\draw[thick] (4,0) -- (4,1);
+\node at (0.5,0.5) {\textbf{S}};
+\node at (2.5,0.5) {\textbf{Exposant (8 bits)}};
+\node at (8,0.5) {\textbf{Mantisse (23 bits)}};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Flashcards à mémoriser}
+\begin{multicols}{2}
+\begin{itemize}
+  \item C2 de -1 sur 8 bits : \texttt{11111111}
+  \item $[0, 2^n - 1]$ : plage non signée
+  \item ASCII A : 65
+  \item IEEE mantisse : sans le 1 implicite
+  \item UTF-8 : variable, compatible ASCII
+  \item $I = \log_2(1/p)$ : information
+  \item 4 bits : max 15
+  \item 8 bits C2 : [-128 ; 127]
+\end{itemize}
+\end{multicols}
+
+\subsection{Schéma : conversion décimal → binaire}
+\begin{center}
+\begin{tikzpicture}[->, thick, >=stealth]
+  \draw (0,0) rectangle ++(6,1);
+  \node at (3,0.5) {\textbf{Nombre décimal}};
+  \draw[->] (3,0) -- ++(0,-0.5);
+
+  \draw (0,-1) rectangle ++(6,1);
+  \node at (3,-0.5) {\textbf{Diviser par 2}};
+  \draw[->] (3,-1) -- ++(0,-0.5);
+
+  \draw (0,-2) rectangle ++(6,1);
+  \node at (3,-1.5) {\textbf{Conserver le reste}};
+  \draw[->] (3,-2) -- ++(0,-0.5);
+
+  \draw (0,-3) rectangle ++(6,1);
+  \node at (3,-2.5) {\textbf{Répéter jusqu'à 0}};
+  \draw[->] (3,-3) -- ++(0,-0.5);
+
+  \draw (0,-4) rectangle ++(6,1);
+  \node at (3,-3.5) {\textbf{Lire les restes à l'envers}};
+\end{tikzpicture}
+\end{center}
+
+\newpage
+
+\subsection{Comment représenter un entier signé étape par étape (ex: -18)}
+Pour représenter correctement un entier négatif comme $-18$ sur 8 bits, on passe par plusieurs étapes logiques. Voici le processus détaillé :
+
+\begin{enumerate}
+  \item \textbf{Conversion en binaire de la valeur absolue}
+  \begin{itemize}
+    \item On commence par convertir $18$ en binaire. Cela donne :
+    \[ 18 = 16 + 2 = 2^4 + 2^1 \Rightarrow 00010010 \text{ (sur 8 bits)} \]
+  \end{itemize}
+
+  \item \textbf{Représentation avec bit de signe (valeur signée)}
+  \begin{itemize}
+    \item On conserve les 7 bits de la valeur absolue, et on ajoute un \textbf{bit de signe} en tête : 0 pour positif, 1 pour négatif.
+    \item Donc ici : $-18$ devient \texttt{10010010} (1 pour le signe, 0010010 pour $18$).
+    \item \textbf{Problème :} cette représentation est ambigüe pour les opérations binaires.
+  \end{itemize}
+
+  \item \textbf{Complément à un (C1)}
+  \begin{itemize}
+    \item On prend la représentation positive (00010010) et on \textbf{inverse chaque bit} :
+    \[ 00010010 \Rightarrow 11101101 \]
+    \item Cette opération retourne la version C1 de $-18$.
+  \end{itemize}
+
+  \item \textbf{Complément à deux (C2)}
+  \begin{itemize}
+    \item On ajoute 1 au résultat précédent (C1) :
+    \[ 11101101 + 1 = 11101110 \]
+    \item Ce résultat est la \textbf{représentation finale en complément à deux} de $-18$.
+    \item Elle est utilisée par les ordinateurs pour les entiers signés car elle permet d'effectuer les additions et soustractions comme pour les non signés.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Résumé :}
+\begin{itemize}
+  \item Décimal : $-18$
+  \item Binaire absolu (8 bits) : 00010010
+  \item Signe-magnitude : 10010010
+  \item Complément à un : 11101101
+  \item Complément à deux : 11101110 \textbf{(utilisé en pratique)}
+\end{itemize}
+
+\subsection{Astuces et erreurs fréquentes}
+\begin{itemize}
+  \item Toujours tester le nombre de bits nécessaires avant de stocker un entier
+  \item Le zéro n’a qu’une seule représentation en C2
+  \item IEEE 754 n’est pas exact : arrondis fréquents
+  \item Ne jamais comparer des réels directement (préférer une tolérance $\epsilon$)
+  \item En UTF-8, \texttt{é} n’est pas en un seul octet
+\end{itemize}
+
+\section{Conclusion}
+Ce chapitre vous a permis de poser des bases solides sur la manière dont les ordinateurs codent l’information. En comprenant comment fonctionnent les entiers, les flottants et les caractères, vous êtes mieux préparé pour les couches logicielles et matérielles à venir. Maîtriser ces codages est essentiel pour tout développement efficace en bas niveau ou dans les systèmes embarqués.
+
+\end{document}

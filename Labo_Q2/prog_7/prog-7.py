@@ -48,7 +48,7 @@ def generer_signaux(delta_t):
 
    R = 1000
 
-   C = 4.7e-7
+   C = 0.00000047
 
    global signaux_initialises, a1, tension_condensateur
    if not signaux_initialises:
@@ -60,20 +60,15 @@ def generer_signaux(delta_t):
    a1 = math.fmod(a1 + delta_t * 2 * math.pi / PERIODE_v,
                   2 * math.pi)
    
-   if a1 < math.pi:
-      V1 = 0
-   else :
-      V1 = AMPL_v
+   V1  = AMPL_v if a1 < math.pi else 0
 
    V2 = tension_condensateur
 
    I = (V1 - V2) / R
 
-   tension_condensateur = I * delta_t / C
+   tension_condensateur = V2 + I * delta_t / C
 
    P = V2 * I
-   if P < 0:
-      P = 0
 
    return (V1, V2, I, P)
 
@@ -155,7 +150,7 @@ seuil_trigger = 5
 seuil_trigger_delta = 0.2
 
 couleur_signaux = [ JAUNE, CYAN, MAGENTA, VERT ]
-gain_signaux = [ 20, 20, 2000, 2000 ]
+gain_signaux = [ 20, 20, 20000, 10000 ]
 
 # Initialisation
 
