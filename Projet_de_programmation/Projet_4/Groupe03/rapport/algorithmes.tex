@@ -1,0 +1,32 @@
+\section{Algorithmes particuliers}\label{algorithmes}
+
+\subsection{Algorithme de recherche de chemin}
+
+L'un des algorithmes les plus importants de notre jeu est la recherche de chemin entre deux cases, pour déterminer si un déplacement de boule est possible. Nous avons implémenté un algorithme de parcours en largeur (BFS) qui:
+
+\begin{itemize}
+    \item Utilise une file (avec GQueue de GLib) pour stocker les cases à explorer
+    \item Maintient une matrice \texttt{visited} pour marquer les cases déjà visitées
+    \item Explore les cases adjacentes (haut, bas, gauche, droite) tant qu'elles sont libres
+    \item S'arrête dès que la case d'arrivée est atteinte, ou quand toutes les possibilités sont épuisées
+\end{itemize}
+
+La complexité temporelle de cet algorithme est $O(n \times m)$ dans le pire des cas, où $n$ et $m$ sont les dimensions du plateau. Cette complexité est optimale car, dans le pire cas, il peut être nécessaire d'explorer toutes les cases du plateau.
+
+\subsection{Algorithme de vérification des alignements}
+
+Un autre algorithme clé est celui qui vérifie s'il existe des alignements d'au moins cinq boules de même couleur. Notre implémentation:
+
+\begin{itemize}
+    \item Parcourt le plateau en vérifiant les quatre directions possibles 
+    pour chaque case: horizontale, verticale, et les deux diagonales
+    \item Pour chaque direction, compte le nombre de boules consécutives de même couleur
+    \item Si un alignement d'au moins cinq boules est trouvé, marque ces cases 
+    pour suppression et ajoute des points au score. Pour supprimer les cases, 
+    on a décidé d'allouer de la mémoire un tableau.
+    \item La suppression effective est réalisée dans un second passage
+     pour éviter des problèmes de comptage
+\end{itemize}
+
+La complexité temporelle de cet algorithme est $O(n \times m \times 4)$, soit $O(n \times m)$, 
+car pour chaque case, nous vérifions dans les quatre directions possibles.

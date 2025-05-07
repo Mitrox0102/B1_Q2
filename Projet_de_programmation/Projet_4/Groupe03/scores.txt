@@ -1,0 +1,10 @@
+Axel     999999  
+Leo      9000  
+Jules    8000  
+Nino     7000  
+Tom      6000  
+Eliott   5000  
+Rayan    4000  
+Yanis    3000  
+Mehdi    3000  
+Joueur 42

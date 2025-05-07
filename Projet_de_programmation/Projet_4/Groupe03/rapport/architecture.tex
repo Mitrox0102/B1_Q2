@@ -1,0 +1,15 @@
+\section{Architecture générale du code}\label{architecture}
+
+Notre implémentation suit le modèle d'architecture MVC (Modèle-Vue-Contrôleur) pour structurer clairement notre code et séparer les différentes préoccupations:
+
+\begin{itemize}
+    \item \textbf{Modèle} (\texttt{modele.h}, \texttt{modele.c}): Contient les structures de données fondamentales du jeu (plateau, cases, scores) et les fonctions pour y accéder et les manipuler. Le modèle implémente la logique de base du jeu comme la vérification des alignements et la gestion des scores.
+    
+    \item \textbf{Vue} (\texttt{vue.h}, \texttt{vue.c}): Gère tout ce qui touche à l'interface graphique, depuis la création des fenêtres et boutons jusqu'aux dialogues et à l'affichage du jeu. La vue n'a aucune connaissance de la logique de jeu elle-même.
+    
+    \item \textbf{Contrôleur} (\texttt{controle.h}, \texttt{controle.c}): Fait le lien entre le modèle et la vue. Il traite les événements utilisateur (clics sur les boutons, sélections dans les menus) et met à jour le modèle et la vue en conséquence.
+    
+    \item \textbf{Utilitaires} (\texttt{utilis.h}, \texttt{utilis.c}): Contient des fonctions d'assistance qui ne relèvent pas strictement d'un des trois composants principaux, comme des fonctions de gestion d'images et des générateurs de boules.
+\end{itemize}
+
+Cette architecture a permis une séparation claire des responsabilités et a facilité le développement parallèle par les membres de l'équipe.

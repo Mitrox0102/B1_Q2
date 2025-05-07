@@ -1,0 +1,99 @@
+
+\section{Structures de données}\label{structures}
+
+\subsection{Structures principales}
+
+Nous avons conçu plusieurs structures de données opaques pour encapsuler les éléments du jeu. Voici leurs définitions complètes:
+
+\begin{lstlisting}[language=C, caption=Structure Plateau\_t]
+/**
+ * @struct Plateau_t
+ * @brief Structure principale representant le plateau de jeu
+ */
+typedef struct Plateau_t {
+    int largeur;              // Nombre de colonnes
+    int hauteur;              // Nombre de lignes
+    int nb_types_symboles;    // Nombre de couleurs differentes
+    int symboles_par_tour;    // Nombre de boules par tour
+    int nb_cases_remplies;    // Nombre de cases occupees
+    Case **cases;             // Tableau 2D des cases du plateau
+    int difficulte;           // Niveau de difficulte
+    Score score;              // Score actuel
+    int nb_suivantes;         // Nombre de boules suivantes
+    Couleur boules_suivantes[MAX_SUIVANTS];// Tableau des couleurs des boules suivantes
+    GtkWidget **boutons_suivants;  // Boutons representant les boules suivantes
+} Plateau;
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, caption=Structure Case\_t]
+/**
+ * @struct Case_t
+ * @brief Structure representant une case du plateau de jeu
+ */
+typedef struct Case_t {
+    bool occupe;       // Indique si la case contient une boule
+    Couleur col;       // Couleur de la boule (si presente)
+    GtkWidget *image;  // Bouton GTK representant la case
+} Case;
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, caption=Structure Score\_t]
+/**
+ * @struct Score_t
+ * @brief Structure representant un score dans le jeu
+ */
+typedef struct Score_t {
+    char nom[MAX_NOM + 1];  // Nom du joueur
+    int valeur;             // Valeur du score
+} Score;
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, caption=Structure Boule\_t]
+/**
+ * @struct Boule_t
+ * @brief Structure representant une boule
+ */
+typedef struct Boule_t {
+    Couleur couleur;    // Couleur de la boule
+    GtkWidget *image;   // Image associee a la boule
+} Boule;
+\end{lstlisting}
+
+\subsection{Structures auxiliaires}
+
+En plus des structures principales, nous utilisons des structures auxiliaires pour faciliter certaines opérations:
+
+\begin{lstlisting}[language=C, caption=Structure MiseAJour]
+/**
+ * @brief Structure utilisee pour la mise a jour des cases 
+ * et la recherche de boutons
+ */
+typedef struct {
+    int ligne_actuelle;      // Coordonnee ligne de la case recherchee
+    int colonne_actuelle;    // Coordonnee colonne de la case recherchee
+    Plateau *plateau;        // Plateau de jeu concerne
+    GtkWidget *est_bouton;   // Bouton trouve
+    GtkWidget *bouton_trouve;// Bouton trouve (alternative)
+} MiseAJour;
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, caption=Structure Data]
+/**
+ * @brief Structure utilisee pour les recherches de widgets dans l'interface
+ */
+typedef struct {
+    GtkWidget *est_widget;   // Widget trouve
+    gboolean est_trouve;     // Indique si un widget a ete trouve
+} Data;
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, caption=Structure InfosCallback]
+   /**
+    * @brief Structure utilisee pour stocker des informations dans les callbacks
+    */
+   typedef struct {
+       int ligne_actuelle;      // Coordonnee ligne de la case courante
+       int colonne_actuelle;    // Coordonnee colonne de la case courante
+       Plateau *plateau;        // Plateau de jeu concerne
+   } InfosCallback;
+   \end{lstlisting}

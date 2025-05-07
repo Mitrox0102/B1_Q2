@@ -1,0 +1,27 @@
+\section{Conclusion}\label{conclusion}
+
+Ce projet nous a permis de développer une version fonctionnelle du jeu Five or More, en mettant en pratique les principes de programmation en C et les concepts vus en cours.
+
+\subsection{Réalisations}
+
+Nous avons réussi à implémenter l'ensemble des fonctionnalités requises :
+\begin{itemize}
+    \item Interface graphique complète avec GTK+
+    \item Trois niveaux de difficulté avec des tailles de grille différentes
+    \item Détection des alignements (horizontaux, verticaux et diagonaux)
+    \item Calcul et sauvegarde des scores
+    \item Génération aléatoire de boules de différentes couleurs
+    \item Algorithme de recherche de chemin pour les déplacements de boules
+\end{itemize}
+
+L'architecture MVC (Modèle-Vue-Contrôleur) que nous avons adoptée nous a permis de maintenir une séparation claire entre les différents aspects du jeu, facilitant les modifications et l'évolution du code.
+
+\subsection{Difficultés rencontrées}
+
+Plusieurs défis ont émergé au cours du développement :
+\begin{itemize}
+    \item \textbf{Gestion de la mémoire} : Les fuites de mémoire ont été une préoccupation constante, nécessitant une attention particulière lors de l'allocation et de la libération des ressources.
+    \item \textbf{Algorithme de recherche de chemin} : L'implémentation d'un algorithme efficace pour déterminer si un chemin existe entre deux cases a été complexe.
+    \item \textbf{Détection des alignements} : La vérification des alignements dans toutes les directions a nécessité une logique rigoureuse pour éviter les erreurs.
+    \item \textbf{Interface GTK+} : L'apprentissage de la bibliothèque GTK+ a représenté une courbe d'apprentissage importante, notamment pour la gestion des événements et la mise à jour dynamique de l'interface.
+\end{itemize}
