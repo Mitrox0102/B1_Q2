@@ -1,0 +1,142 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dans cette section, spécifiez formellement chacun des sous-problèmes.                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Specifications}\label{specifications}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Sous-problème 1}
+Nous voulons écrire une boucle dans laquelle $k$ balaye toutes les valeurs
+possibles pour le préfixe-suffixe. Pour ceci, définissons la fonction:
+\begin{itemize}
+   \item \textbf{Input:}
+      \begin{itemize}
+         \item $N$, la taille du tableau
+      \end{itemize}
+   \item \textbf{Output:}
+      \begin{itemize}
+         \item $k$, la taille du préfixe-suffixe
+      \end{itemize}
+   \item \textbf{Caractérisation de l'input:}
+      \begin{itemize}
+         \item $N$ est un entier non signé tel que $N \geq 0$
+         \item \textbf{unsigned int} N
+      \end{itemize}
+\end{itemize}
+
+\vspace{0.4cm}
+Il nous faut donc écrire une boucle while qui va balayer toutes les valeurs
+possibles de $k$ de $N-1$ à 0.
+\begin{itemize}
+   \item \textbf{Déclaration du compteur:}
+      \begin{itemize}
+         \item \textbf{unsigned int} $k = N-1$
+      \end{itemize}
+   \item \textbf{Nombres de tours dans la boucle:}
+      \begin{itemize}
+         \item $N-1$
+      \end{itemize}
+   \item \textbf{Gardien de boucle:}
+      \begin{itemize}
+         \item $k > 0$
+      \end{itemize}
+   \item \textbf{Corps de Boucle:}
+   \begin{itemize}
+      \item \textbf{Comparer les valeurs de préfixe et de suffixe:}
+      \begin{itemize}
+         \item SP2
+      \end{itemize}
+      \item Décrémenter k
+   \end{itemize}
+\end{itemize}
+
+\begin{lstlisting}[language=C, caption=SP1]
+   /*
+    * @pre: (>$N$ initialisé $\land$ $N > 0$<)
+    * @post: (>$T = T_0$ $\land$ $N = N_0$ $\land$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\land$ $k \geq 0$<)
+    */
+   unsigned int k = N - 1;
+   while (k > 0) {
+      // SP2
+      k--;
+   }
+\end{lstlisting}
+
+\subsection{Sous-problème 2}
+Nous voulons écrire une boucle dans laquelle on compare les valeurs de préfixe
+et de suffixe. Pour ceci définissons la fonction:
+\begin{itemize}
+   \item \textbf{Input:}
+      \begin{itemize}
+         \item $T$, le tableau d'entiers
+         \item $N$, la taille du tableau
+         \item $k$, la taille du préfixe-suffixe
+         \item $i$, le compteur de la boucle
+      \end{itemize}
+   \item \textbf{Output:}
+      \begin{itemize}
+         \item $k$, la taille du préfixe-suffixe
+      \end{itemize}
+   \item \textbf{Caractérisation des inputs:}
+      \begin{itemize}
+         \item $N$ est un entier non signé tel que $N \geq 0$
+         \item \textbf{unsigned int} $N$
+         \item $k$ est un entier non signé tel que $0 \leq k < N$
+         \item \textbf{unsigned int} $k = N - 1$
+         \item $i$ est un entier non signé tel que $0 \leq i < k$
+         \item \textbf{unsigned int} $i = 0$
+         \item $T$ est un tableau d'entiers tel que $T[0, N-1]$
+         \item \textbf{int} $T[N]$
+      \end{itemize}
+\end{itemize}
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% A CONTINUER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{0.4cm}
+Il nous faut donc écrire une boucle while qui va balayer toutes les valeurs
+possibles de $i$ de 0 à k-1 et trouver des correspondances entre les
+valeurs de préfixe $i$ et de suffixe $N-k+i$.
+\begin{itemize}
+   \item \textbf{Déclaration du compteur:}
+      \begin{itemize}
+         \item \textbf{unsigned int} $i = 0$
+      \end{itemize}
+   \item \textbf{Nombres de tours dans la boucle:}
+      \begin{itemize}
+         \item $k$
+      \end{itemize}
+   \item \textbf{Gardien de boucle:}
+   \item \textbf{Condition de sortie:}
+      \begin{itemize}
+         \item $i < k $\space$ \&\& $\space$ T[i] == T[N - k +i]$
+      \end{itemize}
+   \item \textbf{Corps de Boucle:}
+   \begin{itemize}
+      \item \textbf{Vérifier si $i$ et $k$ sont égaux:}
+      \begin{itemize}
+      \item if (i == k)
+      \end{itemize}
+      \item Incrémenter i
+   \end{itemize}
+\end{itemize}
+
+\vspace{0.4cm}
+\begin{lstlisting}[language=C, caption=SP2]
+   /*
+    * @pre: (>$T$ initialisé $\land$ $N > 0$ $\land$ $k$ initialisé $\land$ $0 \leq i < k$<)
+    * @post: (>$T = T_0$ $\land$ $N = N_0$ $\land$ $k = max\_prefixe\_suffixe(*T,k,N)$ $\land$ $k \geq 0$<)
+    */
+   unsigned int i = 0;
+   while (i < k && T[i] == T[N - k + i]) {
+      i++;
+   }
+   if (i == k) {
+      return k;
+   } else {
+      i = 0;
+   }
+\end{lstlisting}

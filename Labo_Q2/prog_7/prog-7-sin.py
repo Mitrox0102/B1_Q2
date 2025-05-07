@@ -128,12 +128,12 @@ def afficher_trigger():
 # Constantes
 
 BLEUCLAIR = (127, 191, 255)
-CYAN = (0, 255, 255)
+CYAN = (0, 255, 255)        #Tension dans le condesateur
 GRIS = (127, 127, 127)
-JAUNE = (255, 255, 0)
-MAGENTA = (255, 0, 255)
+JAUNE = (255, 255, 0)       #Signal sinuisoïdal
+MAGENTA = (255, 0, 255)     #Courant
 ROUGE = (255, 0, 0)
-VERT = (0, 255, 0)
+VERT = (0, 255, 0)          #Puissance
 
 # Paramètres
 

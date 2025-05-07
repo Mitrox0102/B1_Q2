@@ -1,0 +1,80 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dans cette section, indiquez le code complet (sans assertions intermédiaires) de votre %
+% solution                                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Code Complet}\label{code}
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Code du header}
+\begin{lstlisting}[caption={prefixe\_suffixe.h}]
+  #ifndef __PREFIXE_SUFFIXE__
+  #define __PREFIXE_SUFFIXE__
+ 
+  /*
+   * @pre: T initialisé (>$\wedge$<) N >= 0
+   * @post: (>$T = T_0$ $\wedge$ $N = N_0$ $\wedge$ $k = max\_prefixe\_suffixe(*T, i , N)$<)
+   */
+ int prefixe_suffixe(int *T, const unsigned int N);
+ 
+ #endif
+\end{lstlisting}
+
+\subsection{Code du module}
+\begin{lstlisting}[caption={prefixe\_suffixe.c}]
+    #include <assert.h>
+    #include <stdlib.h>
+    
+    #include "prefixe_suffixe.h"
+    
+    
+    int prefixe_suffixe(int *T, const unsigned N){
+      assert(T != NULL && N >= 0);
+
+      int k = N-1;
+      int i = 0;
+    
+      while (k > 0){
+        while (i < k && T[i] == T[N - k +i]) {
+          i++;
+        } // fin while
+        if (i == k) {
+          return k;
+        }
+        else{
+          i = 0;
+        }
+        k--;
+      } // fin while
+      return 0;
+    } // fin prefixe\_suffixe
+\end{lstlisting}
+
+\subsection{Code du programme principal}
+\begin{lstlisting}[caption={main-prefixe\_suffixe.c}]
+    #include <stdio.h>
+
+    #include "prefixe_suffixe.h"
+    
+    #define N1 9
+    #define N2 10
+    #define N3 9
+    
+    int main(){
+    
+      int T1[N1] = {1,4,2,4,5,1,4,2,4};
+      int T2[N2] = {1,2,3,2,1,1,2,3,2,1};
+      int T3[N3] = {3,2,3,2,1,2,3,2,1};
+      int T4[N1] = {1,1,1,1,1,1,1,1,1};
+    
+      printf("Longueur plus long préfixe/suffixe de T1: %u\n", 
+            prefixe_suffixe(T1, N1));
+      printf("Longueur plus long préfixe/suffixe de T2: %u\n", 
+            prefixe_suffixe(T2, N2));
+      printf("Longueur plus long préfixe/suffixe de T3: %u\n", 
+            prefixe_suffixe(T3, N3));
+      printf("Longueur plus long préfixe/suffixe de T4: %u\n", 
+            prefixe_suffixe(T4, N1));
+    }
+\end{lstlisting}
+
+

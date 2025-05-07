@@ -1,0 +1,35 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rédigez ici l'introduction de votre rapport.                                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{introduction}
+\subsection{Contexte}
+Nous voulons construire une fonction dans laquelle nous allons passer en argument
+un tableau de nombres entiers et un nombre entier positif qui représente la taille du tableau.
+Nous voudrions que cette fonction nous retourne la taille du nombre d'éléments
+étant à la fois préfixe et suffixe de ce tableau.
+
+\subsection{Fonctionnement de la fonction}
+Soit un tableau $T$, contenant N valeurs entières $(N \geq 0)$. Nous 
+voulons construire une fonction qui va retourner un entier $k$ $(k \in [0, ...,
+ N-1])$ tel que le sous tableau $T[0,\space k-1]$ est un préfixe de $T$ et 
+$T[N-k, N-1]$ est un suffixe de $T$, c'est-à-dire que leurs éléments soient
+identiques.
+
+Extrait du prototype de la fonction:
+\begin{lstlisting}[language=C, caption=Fonction souhaitée]
+int prefixe_suffixe(int *T, const unsigned int N);
+\end{lstlisting}
+où $T$ et $N$ ne sont pas modifiés.
+
+\subsection{Exemple d'utilisation}
+Soit $F$ un tableau de 10 entiers et lg contient la taille du prefixe-suffixe:
+\begin{lstlisting}[language=C, caption=Exemple d'utilisation]
+int F[10] = {1, 2, 3, 1, 2, 3, 1, 2, 3, 1};
+unsigned int lg = prefixe_suffixe(F, 10);
+printf("Le plus long prefixe-suffixe du tableau est de taille %u.\n", lg);
+\end{lstlisting}
+
+Le printf va nous afficher: Le plus long prefixe-suffixe du tableau est de
+taille 4.
+%%%%%%%%%%%%%%%%%%%%%%%

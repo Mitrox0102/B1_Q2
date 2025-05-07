@@ -1,0 +1,82 @@
+% !TEX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dans cette section, vous devez étudier complètement la complexité de votre code.       %
+% Soyez le plus formel (i.e., mathématique) possible.                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Complexité}\label{complexite}
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Analyse du code}
+
+Décomposons le code de la fonction prefixe\_suffixe en plusieurs blocs :
+\begin{lstlisting}[caption={T(A)}]
+   int k = N-1;
+   int i = 0;
+\end{lstlisting}
+
+\begin{lstlisting}[caption={T(B1)}]
+    while (k > 0){
+      // T(B2)
+      // T(C)
+      // T(D)
+   }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={T(B2) et T(B2')}]
+   while(i < k && T[i] == T[N - k +i]){
+      i++; // T(B2')
+   }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={T(C)}]
+   if (i == k){
+      return k;
+   }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={T(D)}]
+   else{
+      i = 0;
+   }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={T(E)}]
+    k--;
+\end{lstlisting}
+
+\subsection{Calcul de la complexité}
+
+Dans le pire des cas, on entre dans la première boucle N - 1 fois 
+(lorsque $k$ va de $N - 1$ à $1$).
+Dans la boucle imbriquée, on entre jusqu'à $k$ fois. On a donc
+
+On a donc, pour chaque valeur de $k$ :
+
+\[
+T(B1) = T(B2) + max(T(C), T(D)) + T(E) = k + 2
+\]
+
+On a aussi que :
+
+\[
+T(N) = T(A) + T(B1)
+\]
+
+La complexité totale est donc :
+
+\[
+T(N) = T(A) + \sum_{k = 1}^{N-1} (k + 2) = 1 + \sum_{k = 1}^{N-1} k + \sum_{k = 1}^{N-1} 2
+\]
+
+\[
+T(N) = 1 + \frac{(N - 1) \cdot N}{2} + 2(N - 1)
+\]
+
+\[
+T(N) = \frac{2 + N^{2} - N + N - 1}{2}
+\]
+
+\[
+T(N) = \frac{N^{2} + 1}{2}
+\]
+
+Cette fonction peut donc être bornée par $O(N^2)$.
